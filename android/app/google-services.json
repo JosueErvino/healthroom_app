@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "988154685868",
+    "project_id": "health-room-2ff2e",
+    "storage_bucket": "health-room-2ff2e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988154685868:android:bbac70bfe8441c00d43209",
+        "android_client_info": {
+          "package_name": "br.feevale.healthroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988154685868-ns20jlroanbc5dauborv8g3oov9uhcm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE2h1L6jFAEC3RQ4M3KfMd11Lvs0IlXp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988154685868-ns20jlroanbc5dauborv8g3oov9uhcm0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "988154685868-lamgmh8vikqtm2bkj21qaktso4q90s74.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.healthroomApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988154685868:android:935aaf28b20eed9ad43209",
+        "android_client_info": {
+          "package_name": "com.example.healthroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988154685868-ns20jlroanbc5dauborv8g3oov9uhcm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE2h1L6jFAEC3RQ4M3KfMd11Lvs0IlXp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988154685868-ns20jlroanbc5dauborv8g3oov9uhcm0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "988154685868-lamgmh8vikqtm2bkj21qaktso4q90s74.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.healthroomApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
