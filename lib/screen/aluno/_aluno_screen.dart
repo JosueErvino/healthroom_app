@@ -3,9 +3,7 @@ import 'package:healthroom_app/screen/aluno/contato_screen.dart';
 import 'package:healthroom_app/screen/aluno/dashboard_screen.dart';
 import 'package:healthroom_app/screen/aluno/perfil_screen.dart';
 import 'package:healthroom_app/screen/aluno/treino_screen.dart';
-import 'package:healthroom_app/screen/auth/login_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
-import 'package:healthroom_app/screen/loading_screen.dart';
 
 class AlunoScreen extends StatefulWidget {
   const AlunoScreen({super.key});
@@ -31,7 +29,7 @@ class AlunoScreenState extends State<AlunoScreen> {
         title: const Text('Health Room'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.settings),
             onPressed: () => AuthService().logout(),
           ),
         ],
