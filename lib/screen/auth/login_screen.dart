@@ -15,15 +15,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void _handleLogin() {
+    void handleLogin() {
       final email = _emailController.text;
       final senha = _senhaController.text;
 
       AuthService().login(email, senha);
     }
 
-    void _handleCadastro() {
-      // TODO: Implementar route
+    void handleCadastro() {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const CadastroScreen()),
@@ -50,11 +49,11 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: _handleLogin,
+            onPressed: handleLogin,
             child: const Text('Login'),
           ),
           TextButton(
-            onPressed: _handleCadastro,
+            onPressed: handleCadastro,
             child: const Text('Cadastre-se aqui!'),
           ),
         ],
