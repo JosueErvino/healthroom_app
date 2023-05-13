@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/screen/aluno/contato_screen.dart';
+import 'package:healthroom_app/screen/aluno/dashboard_screen.dart';
 import 'package:healthroom_app/screen/aluno/perfil_screen.dart';
 import 'package:healthroom_app/screen/aluno/treino_screen.dart';
 import 'package:healthroom_app/screen/auth/login_screen.dart';
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var _navigationIndex = 0;
 
   final _screens = const [
-    HomeScreen(),
+    DashboardScreen(),
     TreinoScreen(),
     PerfilScreen(),
     ContatoScreen(),
