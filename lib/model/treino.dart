@@ -3,6 +3,7 @@ import 'package:healthroom_app/model/usuario.dart';
 
 class Treino {
   late Usuario usuario;
+  late String descricao;
   late bool ativo;
   late DateTime ultimaExecucao;
   late List<Exercicio> exercicios;
