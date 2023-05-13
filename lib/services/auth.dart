@@ -1,4 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/string.dart';
 
 class AuthService {
   final userStream = FirebaseAuth.instance.authStateChanges();
@@ -19,27 +22,27 @@ class AuthService {
     }
   }
 
-  // Future cadastrarEmail(String email, String senha, Usuario usuario) async {
-  //   try {
-  //     final userCredential = await FirebaseAuth.instance
-  //         .createUserWithEmailAndPassword(email: email, password: senha);
+  Future cadastrarEmail(String email, String senha, Usuario usuario) async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: senha);
 
-  //     final user = userCredential.user;
-  //     if (user != null) {
-  //       usuario.uid = user.uid;
-  //       DatabaseService().criarUsuario(usuario);
-  //       user.updateDisplayName(StringService().firstName(usuario.nome));
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     if (e.code == 'weak-password') {
-  //       return 'A senha é muito fraca.';
-  //     } else if (e.code == 'email-already-in-use') {
-  //       return 'O email já está em uso.';
-  //     }
-  //   } catch (e) {
-  //     return 'Ocorreu um erro inesperado.';
-  //   }
-  // }
+      final user = userCredential.user;
+      if (user != null) {
+        usuario.uid = user.uid;
+        DatabaseService().criarUsuario(usuario);
+        user.updateDisplayName(StringService().firstName(usuario.nome));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        return 'A senha é muito fraca.';
+      } else if (e.code == 'email-already-in-use') {
+        return 'O email já está em uso.';
+      }
+    } catch (e) {
+      return 'Ocorreu um erro inesperado.';
+    }
+  }
 
   Future logout() async {
     try {
