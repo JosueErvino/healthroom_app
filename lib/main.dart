@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/routes.dart';
-import 'package:healthroom_app/screen/home_screen.dart';
 import 'package:healthroom_app/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
