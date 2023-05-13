@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/routes.dart';
 import 'package:healthroom_app/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => UsuarioProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {

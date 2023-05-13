@@ -6,7 +6,12 @@ import 'package:healthroom_app/screen/aluno/treino_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 
 class AlunoScreen extends StatefulWidget {
-  const AlunoScreen({super.key});
+  const AlunoScreen({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
 
   @override
   State<AlunoScreen> createState() => AlunoScreenState();
@@ -26,7 +31,7 @@ class AlunoScreenState extends State<AlunoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Health Room'),
+        title: Text(widget.title),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

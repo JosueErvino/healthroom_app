@@ -17,4 +17,13 @@ class DatabaseService {
       // TODO: implementar tratamento de erro
     }
   }
+
+  Future<Usuario> getUsuario(String uid) async {
+    var ref = _db.collection('usuarios').doc(uid);
+    var snapshot = await ref.get();
+    var data = snapshot.data();
+    Usuario usuario = await Usuario.fromMap(data ?? {});
+    usuario.uid = uid;
+    return usuario;
+  }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/aluno/_aluno_screen.dart';
-import 'package:healthroom_app/screen/aluno/contato_screen.dart';
-import 'package:healthroom_app/screen/aluno/dashboard_screen.dart';
-import 'package:healthroom_app/screen/aluno/perfil_screen.dart';
-import 'package:healthroom_app/screen/aluno/treino_screen.dart';
 import 'package:healthroom_app/screen/auth/login_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
+import 'package:healthroom_app/services/database.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String displayName = 'Health Room';
+  String uid = '';
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -35,7 +38,21 @@ class _HomeScreenState extends State<HomeScreen> {
             return const LoginScreen();
           }
 
-          return const AlunoScreen();
+          displayName = snapshot.data?.displayName ?? 'Health Room';
+          uid = snapshot.data?.uid ?? '';
+          return FutureBuilder<Usuario>(
+              future: DatabaseService().getUsuario(uid).then((value) {
+                UsuarioProvider userProvider =
+                    Provider.of<UsuarioProvider>(context, listen: false);
+                userProvider.setUsuario(value, uid);
+
+                return userProvider.usuario;
+              }),
+              builder: (context, snapshot) {
+                return AlunoScreen(
+                  title: displayName,
+                );
+              });
         });
   }
 }

@@ -20,4 +20,8 @@ enum Perfil {
   bool isInstrutor() {
     return this == Perfil.instrutor;
   }
+
+  static Perfil fromValue(String value) {
+    return Perfil.values.firstWhere((element) => element.toString() == value);
+  }
 }
