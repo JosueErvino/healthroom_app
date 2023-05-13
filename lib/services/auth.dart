@@ -14,11 +14,10 @@ class AuthService {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return 'Nenhum usuário encontrado para esse email.';
-      } else if (e.code == 'wrong-password') {
-        return 'Senha incorreta.';
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        throw 'Email ou senha incorretos.';
       }
+      throw 'Ocorreu um erro inesperado, tente novamente mais tarde.';
     }
   }
 

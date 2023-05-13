@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/screen/auth/cadastro_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
+import 'package:healthroom_app/services/dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,7 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
       final email = _emailController.text;
       final senha = _senhaController.text;
 
-      AuthService().login(email, senha);
+      AuthService().login(email, senha).catchError((onError) {
+        DialogService().showAlertDialog(context, '', onError.toString());
+      });
     }
 
     void handleCadastro() {
