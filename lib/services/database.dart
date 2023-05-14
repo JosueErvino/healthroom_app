@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/treino.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
@@ -36,5 +37,13 @@ class DatabaseService {
 
     return List<Treino>.from(
         treinos.docs.map((doc) => Treino.fromMap(doc.data(), doc.id)).toList());
+  }
+
+  Future<List<Exercicio>> getTreinoById(String id) {
+    var ref = _db.collection('treinos').doc(id).collection('exercicios');
+
+    return ref.get().then((value) => List<Exercicio>.from(value.docs
+        .map((doc) => Exercicio.fromMap(doc.data(), doc.id))
+        .toList()));
   }
 }

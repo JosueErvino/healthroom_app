@@ -1,14 +1,16 @@
 class Exercicio {
+  late String id;
   late int carga;
   late int repeticoes;
   late int series;
   late String descricao;
   late String corpo;
-  late String observacoes;
+  late String? observacoes;
 
-  static Exercicio fromMap(dynamic doc) {
+  static Exercicio fromMap(dynamic doc, String? id) {
     Exercicio exercicio = Exercicio();
 
+    exercicio.id = id!;
     exercicio.carga = doc['carga'];
     exercicio.repeticoes = doc['repeticoes'];
     exercicio.series = doc['series'];
