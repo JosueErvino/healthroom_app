@@ -28,16 +28,13 @@ class DatabaseService {
     return usuario;
   }
 
-  Future<List<Treino>> getTreinosUsuario(String uid) async {
+  Future<List<Treino>> getTreinosUsuario(String userID) async {
     var ref = _db.collection('treinos');
-    var snapshot = ref.where('usuario', isEqualTo: uid);
+    var snapshot = ref.where('usuario', isEqualTo: userID);
 
     var treinos = await snapshot.get();
 
-    return List<Treino>.from(treinos.docs.map((doc) async {
-      final exercicios = await doc.reference.collection('exercicios').get();
-
-      return Treino.fromMap(doc.data(), exercicios.docs);
-    }).toList());
+    return List<Treino>.from(
+        treinos.docs.map((doc) => Treino.fromMap(doc.data(), doc.id)).toList());
   }
 }

@@ -12,7 +12,7 @@ class TreinoScreen extends StatelessWidget {
       label: Text('Treino'),
     ),
     DataColumn(
-      label: Text('Exercícios'),
+      label: Text('Dt. Execução'),
     ),
     DataColumn(
       label: Text('Iniciar'),
@@ -27,7 +27,6 @@ class TreinoScreen extends StatelessWidget {
         future: DatabaseService().getTreinosUsuario(usuario.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print(snapshot.error);
             return Center(
               child: Text(snapshot.error.toString()),
             );
@@ -36,30 +35,33 @@ class TreinoScreen extends StatelessWidget {
           if (snapshot.hasData) {
             final treinos = snapshot.data ?? [];
 
-            print(treinos);
-
-            return DataTable(
-              columns: _columns,
-              rows: treinos
-                  .map(
-                    (treino) => DataRow(
-                      cells: [
-                        DataCell(
-                          Text(treino.descricao),
-                        ),
-                        DataCell(
-                          Text(treino.exercicios.length.toString()),
-                        ),
-                        DataCell(
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.play_arrow),
+            return SizedBox(
+              width: double.infinity,
+              child: DataTable(
+                columns: _columns,
+                rows: treinos
+                    .map(
+                      (treino) => DataRow(
+                        cells: [
+                          DataCell(
+                            Text(treino.descricao),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+                          DataCell(
+                            Text(treino.ultimaExecucao != null
+                                ? treino.ultimaExecucao.toString()
+                                : ''),
+                          ),
+                          DataCell(
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.play_arrow),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
             );
           }
 
