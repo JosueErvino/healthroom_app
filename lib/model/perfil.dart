@@ -1,7 +1,8 @@
 enum Perfil {
   aluno,
   instrutor,
-  nutricionista;
+  nutricionista,
+  indefinido;
 
   @override
   String toString() {
@@ -21,7 +22,10 @@ enum Perfil {
     return this == Perfil.instrutor;
   }
 
-  static Perfil fromValue(String value) {
+  static Perfil fromValue(String? value) {
+    if (value == null) {
+      return Perfil.indefinido;
+    }
     return Perfil.values.firstWhere((element) => element.toString() == value);
   }
 }

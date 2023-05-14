@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/usuario.dart';
 import 'package:provider/provider.dart';
 
-class UsuarioProvider with ChangeNotifier {
-  late Usuario usuario;
+class UsuarioProvider extends ChangeNotifier {
+  late Usuario _usuario;
 
-  void setUsuario(Usuario value, String uid) {
-    usuario = value;
+  Usuario get usuario => _usuario;
+
+  void setUsuario(Usuario usuario, String uid) {
+    _usuario = usuario;
     usuario.uid = uid;
+    notifyListeners();
   }
 
-  static UsuarioProvider getProvider(context) {
-    return Provider.of<UsuarioProvider>(context);
+  static Usuario getProvider(context) {
+    return Provider.of<UsuarioProvider>(context).usuario;
   }
 }

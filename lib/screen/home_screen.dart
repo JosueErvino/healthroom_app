@@ -34,25 +34,39 @@ class _HomeScreenState extends State<HomeScreen> {
             return const Loading();
           }
 
-          if (!snapshot.hasData) {
-            return const LoginScreen();
+          if (snapshot.hasData) {
+            if (snapshot.data?.uid == null) {
+              return const LoginScreen();
+            }
+            displayName = snapshot.data?.displayName ?? 'Health Room';
+            uid = snapshot.data?.uid ?? '';
+            final Future<Usuario> initialization =
+                DatabaseService().getUsuario(uid);
+
+            return FutureBuilder<Usuario>(
+                future: initialization,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+
+                  if (snapshot.hasData) {
+                    UsuarioProvider userProvider =
+                        Provider.of<UsuarioProvider>(context, listen: false);
+                    userProvider.setUsuario(snapshot.data!, uid);
+
+                    return AlunoScreen(
+                      title: displayName,
+                    );
+                  }
+
+                  return const Loading();
+                });
           }
 
-          displayName = snapshot.data?.displayName ?? 'Health Room';
-          uid = snapshot.data?.uid ?? '';
-          return FutureBuilder<Usuario>(
-              future: DatabaseService().getUsuario(uid).then((value) {
-                UsuarioProvider userProvider =
-                    Provider.of<UsuarioProvider>(context, listen: false);
-                userProvider.setUsuario(value, uid);
-
-                return userProvider.usuario;
-              }),
-              builder: (context, snapshot) {
-                return AlunoScreen(
-                  title: displayName,
-                );
-              });
+          return const LoginScreen();
         });
   }
 }
