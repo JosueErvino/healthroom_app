@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthroom_app/model/treino.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
 class DatabaseService {
@@ -25,5 +26,18 @@ class DatabaseService {
     Usuario usuario = await Usuario.fromMap(data ?? {});
     usuario.uid = uid;
     return usuario;
+  }
+
+  Future<List<Treino>> getTreinosUsuario(String uid) async {
+    var ref = _db.collection('treinos');
+    var snapshot = ref.where('usuario', isEqualTo: uid);
+
+    var treinos = await snapshot.get();
+
+    return List<Treino>.from(treinos.docs.map((doc) async {
+      final exercicios = await doc.reference.collection('exercicios').get();
+
+      return Treino.fromMap(doc.data(), exercicios.docs);
+    }).toList());
   }
 }
