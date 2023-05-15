@@ -12,4 +12,10 @@ var appTheme = ThemeData(
     selectedItemColor: primaryColor,
     unselectedItemColor: Colors.black,
   ),
+  listTileTheme: ListTileThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+  ),
+  scaffoldBackgroundColor: const Color(0xFFfdfdfd),
 );
