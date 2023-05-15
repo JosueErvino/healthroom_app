@@ -8,18 +8,6 @@ import 'package:healthroom_app/services/database.dart';
 class TreinoScreen extends StatelessWidget {
   const TreinoScreen({super.key});
 
-  final List<DataColumn> _columns = const [
-    DataColumn(
-      label: Text('Treino'),
-    ),
-    DataColumn(
-      label: Text('Dt. Execução'),
-    ),
-    DataColumn(
-      label: Text('Iniciar'),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final usuario = UsuarioProvider.getProvider(context);
