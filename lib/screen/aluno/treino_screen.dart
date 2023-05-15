@@ -48,34 +48,20 @@ class TreinoScreen extends StatelessWidget {
           if (snapshot.hasData) {
             final treinos = snapshot.data ?? [];
 
-            return SizedBox(
-              width: double.infinity,
-              child: DataTable(
-                columns: _columns,
-                rows: treinos
-                    .map(
-                      (treino) => DataRow(
-                        cells: [
-                          DataCell(
-                            Text(treino.descricao),
-                          ),
-                          DataCell(
-                            Text(treino.ultimaExecucao != null
-                                ? treino.ultimaExecucao.toString()
-                                : ''),
-                          ),
-                          DataCell(
-                            IconButton(
-                              onPressed: () => handleAbrirTreino(
-                                  treino.id, treino.descricao),
-                              icon: const Icon(Icons.play_arrow),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
+            // TODO: Adicionar titulo da tela
+            return ListView.separated(
+              separatorBuilder: (context, index) => const Divider(),
+              itemCount: treinos.length,
+              itemBuilder: (context, index) => ListTile(
+                  title: Text(treinos[index].descricao),
+                  subtitle: Text(treinos[index].ultimaExecucao != null
+                      ? treinos[index].ultimaExecucao.toString()
+                      : ''),
+                  trailing: const Icon(Icons.play_arrow),
+                  onTap: () => handleAbrirTreino(
+                        treinos[index].id,
+                        treinos[index].descricao,
+                      )),
             );
           }
 
