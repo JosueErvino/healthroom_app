@@ -8,6 +8,10 @@ class ExercicioScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void handleConcluirExercicio() {
+      Navigator.pop(context, true);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Exercício'),
@@ -41,7 +45,7 @@ class ExercicioScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pop(context, true),
+        onPressed: handleConcluirExercicio,
         child: const Icon(Icons.check, color: Colors.black),
       ),
     );

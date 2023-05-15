@@ -46,4 +46,49 @@ class DatabaseService {
         .map((doc) => Exercicio.fromMap(doc.data(), doc.id))
         .toList()));
   }
+
+  Future<String> salvarExecucaoExercicio(
+    String? idExecucao,
+    Treino treino,
+    Exercicio exercicio,
+  ) async {
+    final refTreinosConcluidos = _db.collection('treinos-concluidos');
+
+    String execId;
+
+    DocumentReference<Map<String, dynamic>> execucao;
+
+    if (idExecucao == null) {
+      execucao = await refTreinosConcluidos.add({
+        'descricao': treino.descricao,
+        'dataInicio': FieldValue.serverTimestamp(),
+      });
+    } else {
+      execucao = refTreinosConcluidos.doc(idExecucao);
+    }
+
+    execId = execucao.id;
+
+    execucao.update({
+      'descricao': treino.descricao,
+      'usuario': treino.usuario.uid,
+      'dataConclusao': FieldValue.serverTimestamp(),
+    });
+
+    execucao.collection('exercicios').doc(exercicio.id).set({
+      'descricao': exercicio.descricao,
+      'repeticoes': exercicio.repeticoes,
+      'carga': exercicio.carga,
+      'observacoes': exercicio.observacoes,
+      'dataConclusao': FieldValue.serverTimestamp(),
+    });
+
+    return execId;
+  }
+
+  void concluirTreino(Treino treino) {
+    _db.collection('treinos').doc(treino.id).update({
+      'ultimaExecucao': FieldValue.serverTimestamp(),
+    });
+  }
 }

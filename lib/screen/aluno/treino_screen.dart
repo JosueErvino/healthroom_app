@@ -24,16 +24,19 @@ class TreinoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final usuario = UsuarioProvider.getProvider(context);
 
-    handleAbrirTreino(String id, String nome) {
-      Navigator.push(
+    handleAbrirTreino(Treino treino) {
+      final resultado = Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ListaExercicioScreen(
-            idTreino: id,
-            nomeTreino: nome,
-          ),
+          builder: (context) => ListaExercicioScreen(treino: treino),
         ),
       );
+
+      resultado.then((concluido) {
+        if (concluido != null && concluido) {
+          DatabaseService().concluirTreino(treino);
+        }
+      });
     }
 
     return FutureBuilder<List<Treino>>(
@@ -56,11 +59,10 @@ class TreinoScreen extends StatelessWidget {
                   title: Text(treinos[index].descricao),
                   subtitle: Text(treinos[index].ultimaExecucao != null
                       ? treinos[index].ultimaExecucao.toString()
-                      : ''),
+                      : '-'),
                   trailing: const Icon(Icons.play_arrow),
                   onTap: () => handleAbrirTreino(
-                        treinos[index].id,
-                        treinos[index].descricao,
+                        treinos[index],
                       )),
             );
           }
