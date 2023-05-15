@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:healthroom_app/model/exercicio.dart';
+import 'package:healthroom_app/screen/aluno/exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
 
@@ -39,6 +41,13 @@ class ListaExercicioScreen extends StatelessWidget {
                   ),
                 ],
               ));
+    }
+
+    void handleOpenExercicio(Exercicio exercicio) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ExercicioScreen(exercicio: exercicio)));
     }
 
     return FutureBuilder(
@@ -83,7 +92,7 @@ class ListaExercicioScreen extends StatelessWidget {
                       title: Text(exercicios[index].descricao),
                       subtitle: Text(
                           '${exercicios[index].repeticoes} x ${exercicios[index].series} - ${exercicios[index].carga} kg'),
-                      // onTap: ,
+                      onTap: () => handleOpenExercicio(exercicios[index]),
                       // enabled: //if o exercicio foi executado
                     );
                   },
