@@ -5,20 +5,32 @@ class ContatoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: ListView.builder(
-      itemCount: 2,
-      itemBuilder: ((context, index) => Card(
-            margin: const EdgeInsets.all(8.0),
-            shadowColor: Colors.grey[400],
-            child: ListTile(
-              leading: const Icon(Icons.fitness_center),
-              title: const Text('Fulano'),
-              subtitle: const Text('Instrutor(a)'),
-              trailing: const Icon(Icons.chat_bubble),
-              onTap: () {},
-            ),
-          )),
-    ));
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Card(
+          margin: const EdgeInsets.all(8.0),
+          shadowColor: Colors.grey[400],
+          child: ListTile(
+            leading: const Icon(Icons.fitness_center),
+            title: const Text('Fulano'),
+            subtitle: const Text('Instrutor(a)'),
+            trailing: const Icon(Icons.chat_bubble),
+            onTap: () {},
+          ),
+        ),
+        Card(
+          margin: const EdgeInsets.all(8.0),
+          shadowColor: Colors.grey[400],
+          child: ListTile(
+            leading: const Icon(Icons.apple),
+            title: const Text('Fulano'),
+            subtitle: const Text('Nutricionista'),
+            trailing: const Icon(Icons.chat_bubble),
+            onTap: () {},
+          ),
+        )
+      ],
+    );
   }
 }
