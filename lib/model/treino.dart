@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
@@ -6,7 +7,7 @@ class Treino {
   late Usuario usuario;
   late String descricao;
   late bool ativo;
-  late DateTime? ultimaExecucao;
+  late Timestamp? ultimaExecucao;
   late List<Exercicio>? exercicios;
 
   static Treino fromMap(Map<String, dynamic> data, String id) {

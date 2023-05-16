@@ -24,8 +24,8 @@ class _ListaExercicioScreenState extends State<ListaExercicioScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void handleEncerrarTreino() {
-      showDialog(
+    Future<void> handleEncerrarTreino() async {
+      final result = await showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
                 title: const Text('Encerrar Treino'),
@@ -49,6 +49,11 @@ class _ListaExercicioScreenState extends State<ListaExercicioScreen> {
                   ),
                 ],
               ));
+
+      if (result != null && result) {
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context, exerciciosConcluidos.isNotEmpty);
+      }
     }
 
     void handleOpenExercicio(Exercicio exercicio) {

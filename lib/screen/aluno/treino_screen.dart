@@ -4,6 +4,7 @@ import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/aluno/lista_exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/datetime.dart';
 
 class TreinoScreen extends StatelessWidget {
   const TreinoScreen({super.key});
@@ -13,18 +14,12 @@ class TreinoScreen extends StatelessWidget {
     final usuario = UsuarioProvider.getProvider(context);
 
     handleAbrirTreino(Treino treino) {
-      final resultado = Navigator.push(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ListaExercicioScreen(treino: treino),
         ),
       );
-
-      resultado.then((concluido) {
-        if (concluido != null && concluido) {
-          DatabaseService().concluirTreino(treino);
-        }
-      });
     }
 
     return FutureBuilder<List<Treino>>(
@@ -32,7 +27,9 @@ class TreinoScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
-              child: Text(snapshot.error.toString()),
+              child: Text(
+                snapshot.error.toString(),
+              ),
             );
           }
 
@@ -45,9 +42,9 @@ class TreinoScreen extends StatelessWidget {
               itemCount: treinos.length,
               itemBuilder: (context, index) => ListTile(
                   title: Text(treinos[index].descricao),
-                  subtitle: Text(treinos[index].ultimaExecucao != null
-                      ? treinos[index].ultimaExecucao.toString()
-                      : '-'),
+                  subtitle: Text(
+                    getDataUltimaExecucao(treinos[index]),
+                  ),
                   trailing: const Icon(Icons.play_arrow),
                   onTap: () => handleAbrirTreino(
                         treinos[index],
@@ -57,5 +54,11 @@ class TreinoScreen extends StatelessWidget {
 
           return const Loading();
         });
+  }
+
+  String getDataUltimaExecucao(Treino treino) {
+    if (treino.ultimaExecucao == null) return '-';
+
+    return DateTimeService().formatarData(treino.ultimaExecucao!.toDate());
   }
 }
