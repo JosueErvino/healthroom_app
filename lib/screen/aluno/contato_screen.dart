@@ -5,8 +5,23 @@ class ContatoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Contato'),
+    return ListView(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.fitness_center),
+          title: const Text('Fulano'),
+          subtitle: const Text('Instrutor(a)'),
+          trailing: const Icon(Icons.chat_bubble),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: const Icon(Icons.apple),
+          title: const Text('Ciclano'),
+          subtitle: const Text('Nutricionista'),
+          trailing: const Icon(Icons.chat_bubble),
+          onTap: () {},
+        ),
+      ],
     );
   }
 }
