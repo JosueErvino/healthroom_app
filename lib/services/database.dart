@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthroom_app/model/exercicio.dart';
+import 'package:healthroom_app/model/treino.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
 class DatabaseService {
@@ -25,5 +27,68 @@ class DatabaseService {
     Usuario usuario = await Usuario.fromMap(data ?? {});
     usuario.uid = uid;
     return usuario;
+  }
+
+  Future<List<Treino>> getTreinosUsuario(String userID) async {
+    var ref = _db.collection('treinos');
+    var snapshot = ref.where('usuario', isEqualTo: userID);
+
+    var treinos = await snapshot.get();
+
+    return List<Treino>.from(
+        treinos.docs.map((doc) => Treino.fromMap(doc.data(), doc.id)).toList());
+  }
+
+  Future<List<Exercicio>> getTreinoById(String id) {
+    var ref = _db.collection('treinos').doc(id).collection('exercicios');
+
+    return ref.get().then((value) => List<Exercicio>.from(value.docs
+        .map((doc) => Exercicio.fromMap(doc.data(), doc.id))
+        .toList()));
+  }
+
+  Future<String> salvarExecucaoExercicio(
+    String? idExecucao,
+    Treino treino,
+    Exercicio exercicio,
+  ) async {
+    final refTreinosConcluidos = _db.collection('treinos-concluidos');
+
+    String execId;
+
+    DocumentReference<Map<String, dynamic>> execucao;
+
+    if (idExecucao == null) {
+      execucao = await refTreinosConcluidos.add({
+        'descricao': treino.descricao,
+        'dataInicio': FieldValue.serverTimestamp(),
+      });
+    } else {
+      execucao = refTreinosConcluidos.doc(idExecucao);
+    }
+
+    execId = execucao.id;
+
+    execucao.update({
+      'descricao': treino.descricao,
+      'usuario': treino.usuario.uid,
+      'dataConclusao': FieldValue.serverTimestamp(),
+    });
+
+    execucao.collection('exercicios').doc(exercicio.id).set({
+      'descricao': exercicio.descricao,
+      'repeticoes': exercicio.repeticoes,
+      'carga': exercicio.carga,
+      'observacoes': exercicio.observacoes,
+      'dataConclusao': FieldValue.serverTimestamp(),
+    });
+
+    return execId;
+  }
+
+  void concluirTreino(Treino treino) {
+    _db.collection('treinos').doc(treino.id).update({
+      'ultimaExecucao': FieldValue.serverTimestamp(),
+    });
   }
 }

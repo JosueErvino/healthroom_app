@@ -44,10 +44,6 @@ class AuthService {
   }
 
   Future logout() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      // TODO
-    }
+    await FirebaseAuth.instance.signOut();
   }
 }
