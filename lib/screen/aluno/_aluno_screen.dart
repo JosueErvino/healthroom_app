@@ -21,9 +21,8 @@ class AlunoScreenState extends State<AlunoScreen> {
   int _navigationIndex = 0;
 
   final List<Widget> _screens = const [
-    DashboardScreen(),
-    TreinoScreen(),
     PerfilScreen(),
+    TreinoScreen(),
     ContatoScreen(),
   ];
 
@@ -64,16 +63,12 @@ class AlunoScreenState extends State<AlunoScreen> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.person),
+            label: 'IMC',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
             label: 'Treinos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble),
