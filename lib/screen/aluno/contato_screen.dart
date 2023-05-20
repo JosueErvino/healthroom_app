@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:healthroom_app/services/whatsapp.dart';
 
 class ContatoScreen extends StatelessWidget {
   const ContatoScreen({super.key});
+
+  void _abrirWhatsapp(String telefone) {
+    WhatsappService.abrirConversa(telefone);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class ContatoScreen extends StatelessWidget {
             title: const Text('Fulano'),
             subtitle: const Text('Instrutor(a)'),
             trailing: const Icon(Icons.chat_bubble),
-            onTap: () {},
+            onTap: () => _abrirWhatsapp('5511999999999'),
           ),
         ),
         Card(
@@ -27,7 +32,7 @@ class ContatoScreen extends StatelessWidget {
             title: const Text('Fulano'),
             subtitle: const Text('Nutricionista'),
             trailing: const Icon(Icons.chat_bubble),
-            onTap: () {},
+            onTap: () => _abrirWhatsapp('5511999999999'),
           ),
         )
       ],

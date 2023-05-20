@@ -21,9 +21,8 @@ class AlunoScreenState extends State<AlunoScreen> {
   int _navigationIndex = 0;
 
   final List<Widget> _screens = const [
-    DashboardScreen(),
-    TreinoScreen(),
     PerfilScreen(),
+    TreinoScreen(),
     ContatoScreen(),
   ];
 
@@ -32,12 +31,31 @@ class AlunoScreenState extends State<AlunoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () => AuthService().logout(),
-          ),
-        ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Center(
+                child: Text(
+                  'H E A L T H R O O M',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Sair'),
+              onTap: () => AuthService().logout(),
+            ),
+          ],
+        ),
       ),
       body: _screens.elementAt(_navigationIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -45,16 +63,12 @@ class AlunoScreenState extends State<AlunoScreen> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.person),
+            label: 'IMC',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
             label: 'Treinos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble),
