@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
 class PerfilScreen extends StatelessWidget {
-  final Usuario usuario;
-
-  const PerfilScreen({super.key, required this.usuario});
+  const PerfilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +17,8 @@ class PerfilScreen extends StatelessWidget {
         ),
         Expanded(
           child: Column(
-            children: [
-              InfoCard(usuario: usuario),
+            children: const [
+              InfoCard(peso: 88, altura: 1.88),
               Card(
                 child: Text('Peso:'),
               ),
@@ -35,20 +33,22 @@ class PerfilScreen extends StatelessWidget {
 class InfoCard extends StatelessWidget {
   const InfoCard({
     super.key,
-    required this.usuario,
+    required this.peso,
+    required this.altura,
   });
 
-  final Usuario usuario;
+  final double? peso;
+  final double? altura;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          children: [
-            const Text('Altura'),
-            Text(usuario.altura.toString()),
+          children: const [
+            Text('Altura'),
+            // Text(altura.toString()),
           ],
         ),
       ),
