@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/provider/usuario_provider.dart';
 
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Usuario usuario = UsuarioProvider.getProvider(context);
+
     return Row(
       children: [
-        SizedBox(
-          width: 200,
+        Expanded(
+          flex: 1,
           child: Image.asset(
             'assets/img/body.png',
             fit: BoxFit.contain,
           ),
         ),
         Expanded(
+          flex: 1,
           child: Column(
-            children: const [
-              InfoCard(peso: 88, altura: 1.88),
-              Card(
-                child: Text('Peso:'),
-              ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InfoCard(label: 'Altura', value: usuario.altura, medida: 'm'),
+              const SizedBox(height: 10),
+              InfoCard(label: 'Peso', value: usuario.peso, medida: 'kg'),
             ],
           ),
         )
@@ -31,25 +35,40 @@ class PerfilScreen extends StatelessWidget {
 }
 
 class InfoCard extends StatelessWidget {
+  final String label;
+  final double? value;
+  final String medida;
+
   const InfoCard({
     super.key,
-    required this.peso,
-    required this.altura,
+    required this.label,
+    required this.value,
+    required this.medida,
   });
-
-  final double? peso;
-  final double? altura;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.green[200],
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: const [
-            Text('Altura'),
-            // Text(altura.toString()),
-          ],
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+              Text(
+                (value?.toString() ?? '-') + medida,
+                style: const TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );
