@@ -16,9 +16,8 @@ class ContatoScreen extends StatelessWidget {
         Card(
           margin: const EdgeInsets.all(8.0),
           shadowColor: Colors.grey[400],
-          color: Colors.green,
+          color: Colors.green[200],
           child: ListTile(
-            textColor: Colors.white,
             leading: const Icon(Icons.fitness_center),
             title: const Text('Fulano'),
             subtitle: const Text('Instrutor(a)'),
@@ -29,9 +28,8 @@ class ContatoScreen extends StatelessWidget {
         Card(
           margin: const EdgeInsets.all(8.0),
           shadowColor: Colors.grey[400],
-          color: Colors.green,
+          color: Colors.green[200],
           child: ListTile(
-            textColor: Colors.white,
             leading: const Icon(Icons.apple),
             title: const Text('Fulano'),
             subtitle: const Text('Nutricionista'),
