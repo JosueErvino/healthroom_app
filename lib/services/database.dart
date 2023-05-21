@@ -100,10 +100,6 @@ class DatabaseService {
         .where('perfil', isEqualTo: Perfil.aluno.toString())
         .get();
 
-    print(usuarioAtual.uid);
-    print(email);
-    print(Perfil.aluno.toString());
-
     if (query.docs.isEmpty) {
       throw 'Usuário não encontrado';
     }
