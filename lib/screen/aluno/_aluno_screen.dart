@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/screen/aluno/contato_screen.dart';
-import 'package:healthroom_app/screen/aluno/dashboard_screen.dart';
 import 'package:healthroom_app/screen/aluno/perfil_screen.dart';
 import 'package:healthroom_app/screen/aluno/treino_screen.dart';
 import 'package:healthroom_app/services/auth.dart';

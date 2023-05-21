@@ -5,10 +5,20 @@ import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/services/dialog.dart';
 
+import 'dados_aluno_screen.dart';
+
 class InstrutorScreen extends StatelessWidget {
   final String title;
 
-  const InstrutorScreen({super.key, required this.title});
+  final listaAlunos = [
+    'Aluno 1',
+    'Aluno 2',
+    'Aluno 3',
+    'Pendente 1',
+    'Pendente 2',
+  ];
+
+  InstrutorScreen({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +98,21 @@ class InstrutorScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: ListView(),
+        body: ListView.builder(
+          itemCount: listaAlunos.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              leading: const Icon(Icons.person),
+              title: Text(listaAlunos[index]),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DadosAlunoScreen(),
+                ),
+              ),
+            );
+          },
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: handleSolicitarAluno,
           tooltip: 'Adicionar aluno',
