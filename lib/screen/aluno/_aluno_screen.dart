@@ -52,7 +52,7 @@ class AlunoScreenState extends State<AlunoScreen> {
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Sair'),
-              onTap: () => AuthService().logout(),
+              onTap: () => AuthService.logout(),
             ),
           ],
         ),

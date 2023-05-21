@@ -3,6 +3,7 @@ import 'package:healthroom_app/model/usuario.dart';
 import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/aluno/_aluno_screen.dart';
 import 'package:healthroom_app/screen/auth/login_screen.dart';
+import 'package:healthroom_app/screen/instrutor/_instrutor_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
@@ -56,6 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     UsuarioProvider userProvider =
                         Provider.of<UsuarioProvider>(context, listen: false);
                     userProvider.setUsuario(snapshot.data!, uid);
+
+                    if (userProvider.usuario.isInstrutor()) {
+                      return InstrutorScreen(
+                        title: displayName,
+                      );
+                    }
 
                     return AlunoScreen(
                       title: displayName,

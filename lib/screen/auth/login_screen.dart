@@ -20,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final email = _emailController.text;
       final senha = _senhaController.text;
 
-      AuthService().login(email, senha).catchError((onError) {
+      AuthService.login(email, senha).catchError((onError) {
         DialogService().showAlertDialog(context, '', onError.toString());
       });
     }

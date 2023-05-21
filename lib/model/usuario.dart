@@ -24,4 +24,8 @@ class Usuario {
     usuario.altura = data['altura'] ?? 0.0;
     return Future.value(usuario);
   }
+
+  bool isInstrutor() {
+    return perfil == Perfil.instrutor;
+  }
 }

@@ -34,8 +34,8 @@ class _CadastroScreenState extends State<CadastroScreen> {
       usuario.dataNascimento = _dataNascimentoController.text;
       usuario.perfil = _perfil;
 
-      AuthService()
-          .cadastrarEmail(_emailController.text, _senhaController.text, usuario)
+      AuthService.cadastrarEmail(
+              _emailController.text, _senhaController.text, usuario)
           .then((value) => handleBack());
     }
 
