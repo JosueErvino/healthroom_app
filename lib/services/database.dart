@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthroom_app/model/exercicio.dart';
+import 'package:healthroom_app/model/perfil.dart';
 import 'package:healthroom_app/model/treino.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
@@ -90,5 +91,42 @@ class DatabaseService {
     _db.collection('treinos').doc(treino.id).update({
       'ultimaExecucao': FieldValue.serverTimestamp(),
     });
+  }
+
+  Future<void> solicitarVinculo(Usuario usuarioAtual, String email) async {
+    var ref = _db.collection('usuarios');
+    var query = await ref
+        .where('email', isEqualTo: email)
+        .where('perfil', isEqualTo: Perfil.aluno.toString())
+        .get();
+
+    print(usuarioAtual.uid);
+    print(email);
+    print(Perfil.aluno.toString());
+
+    if (query.docs.isEmpty) {
+      throw 'Usuário não encontrado';
+    }
+
+    var alunoDoc = query.docs.first;
+    var refVinculos = _db.collection('solicitacoes');
+    var queryVinculos = await refVinculos
+        .where('aluno', isEqualTo: alunoDoc.id)
+        .where('profissional', isEqualTo: usuarioAtual.uid)
+        .get();
+
+    if (queryVinculos.docs.isNotEmpty) {
+      throw 'Vínculo já solicitado e pendente de aprovação';
+    }
+
+    try {
+      await refVinculos.add({
+        'aluno': alunoDoc.id,
+        'profissional': usuarioAtual.uid,
+        'tipo': usuarioAtual.perfil.toString(),
+      });
+    } catch (e) {
+      throw 'Ocorreu um erro inesperado, tente novamente mais tarde';
+    }
   }
 }
