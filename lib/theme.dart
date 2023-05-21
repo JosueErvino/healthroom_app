@@ -29,5 +29,38 @@ var appTheme = ThemeData(
       fontSize: 20,
       fontWeight: FontWeight.bold,
     ),
+    toolbarTextStyle: TextStyle(
+      color: Colors.black,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  splashColor: primaryColor,
+  inputDecorationTheme: _textFieldTheme(),
+  dropdownMenuTheme: DropdownMenuThemeData(
+    inputDecorationTheme: _textFieldTheme(),
   ),
 );
+
+InputDecorationTheme _textFieldTheme() {
+  return InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Colors.grey,
+      ),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: primaryColor,
+      ),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    labelStyle: const TextStyle(
+      color: Colors.black,
+    ),
+  );
+}

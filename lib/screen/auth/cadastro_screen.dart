@@ -44,81 +44,88 @@ class _CadastroScreenState extends State<CadastroScreen> {
       appBar: AppBar(
         title: const Text('Cadastro'),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _nomeController,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            decoration: const InputDecoration(
-              labelText: 'Nome',
-            ),
-          ),
-          TextField(
-            controller: _emailController,
-            keyboardType: TextInputType.emailAddress,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            decoration: const InputDecoration(
-              labelText: 'E-mail',
-            ),
-          ),
-          TextField(
-            controller: _senhaController,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            obscureText: true,
-            decoration: const InputDecoration(
-              labelText: 'Senha',
-            ),
-          ),
-          TextField(
-            controller: _telefoneController,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            keyboardType: TextInputType.phone,
-            decoration: const InputDecoration(
-              labelText: 'Telefone',
-              hintText: '(00) 00000-0000',
-            ),
-          ),
-          TextField(
-            controller: _dataNascimentoController,
-            onEditingComplete: () => FocusScope.of(context).nextFocus(),
-            keyboardType: TextInputType.datetime,
-            decoration: const InputDecoration(
-              labelText: 'Data de Nascimento',
-              hintText: 'dd/mm/yyyy',
-            ),
-          ),
-          DropdownButton(
-            value: _perfil,
-            hint: const Text('Selecione o perfil'),
-            items: const [
-              DropdownMenuItem(
-                value: Perfil.aluno,
-                child: Text('Aluno'),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            TextField(
+              controller: _nomeController,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              decoration: const InputDecoration(
+                labelText: 'Nome',
               ),
-              DropdownMenuItem(
-                value: Perfil.instrutor,
-                child: Text('Instrutor'),
+            ),
+            TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              decoration: const InputDecoration(
+                labelText: 'E-mail',
               ),
-              DropdownMenuItem(
-                value: Perfil.nutricionista,
-                child: Text('Nutricionista'),
+            ),
+            TextField(
+              controller: _senhaController,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Senha',
               ),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _perfil = value!;
-              });
-            },
-          ),
-          ElevatedButton(
-            onPressed: handleCadastro,
-            child: const Text('Cadastrar'),
-          ),
-          TextButton(
-            onPressed: handleBack,
-            child: const Text('Já possui conta? Faça o login!'),
-          ),
-        ],
+            ),
+            TextField(
+              controller: _telefoneController,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                labelText: 'Telefone',
+                hintText: '(00) 00000-0000',
+              ),
+            ),
+            TextField(
+              controller: _dataNascimentoController,
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
+              keyboardType: TextInputType.datetime,
+              decoration: const InputDecoration(
+                labelText: 'Data de Nascimento',
+                hintText: 'dd/mm/yyyy',
+              ),
+            ),
+            DropdownButton(
+              isExpanded: true,
+              value: _perfil,
+              dropdownColor: Colors.grey[200],
+              hint: const Text('Selecione o perfil'),
+              items: const [
+                DropdownMenuItem(
+                  value: Perfil.aluno,
+                  child: Text('Aluno'),
+                ),
+                DropdownMenuItem(
+                  value: Perfil.instrutor,
+                  child: Text('Instrutor'),
+                ),
+                DropdownMenuItem(
+                  value: Perfil.nutricionista,
+                  child: Text('Nutricionista'),
+                ),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _perfil = value!;
+                });
+              },
+            ),
+            ElevatedButton(
+              onPressed: handleCadastro,
+              child: const Text('Cadastrar'),
+            ),
+            TextButton(
+              onPressed: handleBack,
+              child: const Text('Já possui conta? Faça o login!'),
+            ),
+          ],
+        ),
       ),
     );
   }
