@@ -5,6 +5,13 @@ import 'package:healthroom_app/provider/usuario_provider.dart';
 class PerfilScreen extends StatelessWidget {
   const PerfilScreen({super.key});
 
+  double _calculoImc(double? peso, double? altura) {
+    if (peso == null || altura == null || altura == 0) {
+      return 0;
+    }
+    return peso / (altura * altura);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Usuario usuario = UsuarioProvider.getProvider(context);
@@ -23,9 +30,27 @@ class PerfilScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InfoCard(label: 'Altura', value: usuario.altura, medida: 'm'),
-              const SizedBox(height: 10),
-              InfoCard(label: 'Peso', value: usuario.peso, medida: 'kg'),
+              InfoCard(
+                label: 'IMC',
+                value: _calculoImc(usuario.peso, usuario.altura),
+                medida: '',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              InfoCard(
+                label: 'Altura',
+                value: usuario.altura,
+                medida: 'm',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              InfoCard(
+                label: 'Peso',
+                value: usuario.peso,
+                medida: 'kg',
+              ),
             ],
           ),
         )
@@ -64,7 +89,7 @@ class InfoCard extends StatelessWidget {
                 ),
               ),
               Text(
-                (value?.toString() ?? '-') + medida,
+                (value?.toStringAsPrecision(3) ?? '-') + medida,
                 style: const TextStyle(fontSize: 20),
               ),
             ],
