@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/aluno/contato_screen.dart';
 import 'package:healthroom_app/screen/aluno/perfil_screen.dart';
 import 'package:healthroom_app/screen/aluno/treino_screen.dart';
-import 'package:healthroom_app/services/auth.dart';
+import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/widget/app_drawer.dart';
 
 class AlunoScreen extends StatefulWidget {
   const AlunoScreen({
@@ -18,6 +22,8 @@ class AlunoScreen extends StatefulWidget {
 
 class AlunoScreenState extends State<AlunoScreen> {
   int _navigationIndex = 0;
+  int _solicitacoes = 0;
+  List _listSoliciacoes = [];
 
   final List<Widget> _screens = const [
     PerfilScreen(),
@@ -27,59 +33,85 @@ class AlunoScreenState extends State<AlunoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.green,
-              ),
-              child: Center(
-                child: Text(
-                  'H E A L T H R O O M',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
+    Usuario usuario = UsuarioProvider.getProvider(context);
+
+    return StreamBuilder<QuerySnapshot>(
+        stream: DatabaseService.getSolicitacoesAlunoStream(usuario),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final docs = snapshot.data?.docs ?? [];
+            _solicitacoes = docs.length;
+            _listSoliciacoes = docs;
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(widget.title + _solicitacoes.toString()),
+              actions: [
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: Stack(children: [
+                      const Icon(Icons.menu),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: _solicitacoes == 0
+                            ? Container()
+                            : Container(
+                                height: 12,
+                                width: 12,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  _solicitacoes.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 9,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ]),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
                   ),
                 ),
-              ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.exit_to_app),
-              title: const Text('Sair'),
-              onTap: () => AuthService.logout(),
+            endDrawer: AppDrawer(
+              notificacao: _solicitacoes,
+              usuario: usuario,
+              listaSolicitacoes: _listSoliciacoes,
             ),
-          ],
-        ),
-      ),
-      body: _screens.elementAt(_navigationIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _navigationIndex,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'IMC',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'Treinos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Chat',
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _navigationIndex = index;
-          });
-        },
-      ),
-    );
+            body: _screens.elementAt(_navigationIndex),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _navigationIndex,
+              type: BottomNavigationBarType.fixed,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'IMC',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.fitness_center),
+                  label: 'Treinos',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.chat_bubble),
+                  label: 'Chat',
+                ),
+              ],
+              onTap: (index) {
+                setState(() {
+                  _navigationIndex = index;
+                });
+              },
+            ),
+          );
+        });
   }
 }

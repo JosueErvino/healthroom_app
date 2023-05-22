@@ -126,4 +126,11 @@ class DatabaseService {
       throw 'Ocorreu um erro inesperado, tente novamente mais tarde';
     }
   }
+
+  static Stream<QuerySnapshot> getSolicitacoesAlunoStream(Usuario aluno) {
+    return FirebaseFirestore.instance
+        .collection('solicitacoes')
+        .where('aluno', isEqualTo: aluno.uid)
+        .snapshots();
+  }
 }
