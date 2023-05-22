@@ -119,6 +119,7 @@ class DatabaseService {
       await refVinculos.add({
         'aluno': alunoDoc.id,
         'profissional': usuarioAtual.uid,
+        'nomeProfissional': usuarioAtual.nome,
         'tipo': usuarioAtual.perfil.toString(),
       });
     } catch (e) {
