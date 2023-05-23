@@ -47,7 +47,7 @@ class AlunoScreenState extends State<AlunoScreen> {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(widget.title + _solicitacoes.toString()),
+              title: Text(widget.title),
               actions: [
                 Builder(
                   builder: (context) => IconButton(
