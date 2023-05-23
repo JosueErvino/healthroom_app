@@ -43,14 +43,17 @@ class AppDrawer extends StatelessWidget {
                     ],
                   ),
                   title: const Text('Solicitações'),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SolicitacoesScreen(
-                        listaSolicitacoes: listaSolicitacoes,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SolicitacoesScreen(
+                          listaSolicitacoes: listaSolicitacoes,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                    Scaffold.of(context).closeEndDrawer();
+                  },
                 ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
