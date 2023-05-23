@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/screen/aluno/solicitacoes_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
+import 'package:healthroom_app/widget/app_badge.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
     super.key,
     required int notificacao,
     required Usuario usuario,
-    List? listaSolicitacoes,
+    this.listaSolicitacoes,
   });
+
+  final List? listaSolicitacoes;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +33,25 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
+          listaSolicitacoes == null
+              ? const SizedBox.shrink()
+              : ListTile(
+                  leading: Stack(
+                    children: [
+                      const Icon(Icons.person),
+                      AppBadge(value: listaSolicitacoes!.length),
+                    ],
+                  ),
+                  title: const Text('Solicitações'),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SolicitacoesScreen(
+                        listaSolicitacoes: listaSolicitacoes,
+                      ),
+                    ),
+                  ),
+                ),
           ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Sair'),

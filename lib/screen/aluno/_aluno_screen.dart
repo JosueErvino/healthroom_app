@@ -6,6 +6,7 @@ import 'package:healthroom_app/screen/aluno/contato_screen.dart';
 import 'package:healthroom_app/screen/aluno/perfil_screen.dart';
 import 'package:healthroom_app/screen/aluno/treino_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/widget/app_badge.dart';
 import 'package:healthroom_app/widget/app_drawer.dart';
 
 class AlunoScreen extends StatefulWidget {
@@ -57,22 +58,7 @@ class AlunoScreenState extends State<AlunoScreen> {
                         right: 0,
                         child: _solicitacoes == 0
                             ? Container()
-                            : Container(
-                                height: 12,
-                                width: 12,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  _solicitacoes.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 9,
-                                  ),
-                                ),
-                              ),
+                            : AppBadge(value: _solicitacoes),
                       ),
                     ]),
                     onPressed: () => Scaffold.of(context).openEndDrawer(),
