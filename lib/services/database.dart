@@ -122,6 +122,8 @@ class DatabaseService {
         'nomeProfissional': usuarioAtual.nome,
         'tipo': usuarioAtual.perfil.toString(),
       });
+
+      // TODO: Notificar aluno
     } catch (e) {
       throw 'Ocorreu um erro inesperado, tente novamente mais tarde';
     }
@@ -132,5 +134,18 @@ class DatabaseService {
         .collection('solicitacoes')
         .where('aluno', isEqualTo: aluno.uid)
         .snapshots();
+  }
+
+  static void responderSolicitacao(String id, bool aceita) {
+    // TODO: Implementação de teste, remover depois
+    FirebaseFirestore.instance.collection('solicitacoes').doc(id).update({
+      'aceita': aceita,
+    });
+
+    // TODO: Restante
+    // Salvar vinculo no aluno
+    // Salvar vinculo no profissional
+    // Remover solicitação?
+    // Notificar profissional se aprovado
   }
 }
