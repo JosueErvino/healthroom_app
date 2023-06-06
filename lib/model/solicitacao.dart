@@ -14,7 +14,7 @@ class Solicitacao {
     solicitacao.idAluno = map['aluno'];
     solicitacao.idProfissional = map['profissional'];
     solicitacao.nomeProfissional = map['nomeProfissional'];
-    solicitacao.perfilProfissional = Perfil.fromValue(map['perfil']);
+    solicitacao.perfilProfissional = Perfil.fromValue(map['tipo']);
 
     return solicitacao;
   }
