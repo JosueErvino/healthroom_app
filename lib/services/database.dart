@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/perfil.dart';
+import 'package:healthroom_app/model/solicitacao.dart';
 import 'package:healthroom_app/model/treino.dart';
 import 'package:healthroom_app/model/usuario.dart';
 
@@ -136,16 +137,38 @@ class DatabaseService {
         .snapshots();
   }
 
-  static void responderSolicitacao(String id, bool aceita) {
-    // TODO: Implementação de teste, remover depois
-    FirebaseFirestore.instance.collection('solicitacoes').doc(id).update({
-      'aceita': aceita,
-    });
+  static Future<void> responderSolicitacao(
+      Solicitacao solicitacao, bool aceita) async {
+    final ref = FirebaseFirestore.instance;
 
-    // TODO: Restante
-    // Salvar vinculo no aluno
-    // Salvar vinculo no profissional
-    // Remover solicitação?
-    // Notificar profissional se aprovado
+    if (aceita) {
+      ref
+          .collection('usuarios')
+          .doc(solicitacao.idAluno)
+          .get()
+          .then((snapshot) {
+        final aluno = snapshot.data();
+        final perfilProfissional = solicitacao.perfilProfissional.toString();
+
+        if (aluno == null) return;
+        if (aluno[perfilProfissional] != null) {
+          ref
+              .collection('vinculo')
+              .doc(aluno[perfilProfissional])
+              .set({snapshot.id: false}, SetOptions(merge: true));
+        }
+
+        snapshot.reference.update({
+          perfilProfissional: solicitacao.idProfissional,
+        });
+
+        ref
+            .collection('vinculo')
+            .doc(solicitacao.idProfissional)
+            .set({snapshot.id: true}, SetOptions(merge: true));
+      });
+    }
+
+    ref.collection('solicitacoes').doc(solicitacao.id).delete();
   }
 }

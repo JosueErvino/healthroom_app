@@ -38,8 +38,8 @@ class SolicitacoesScreen extends StatelessWidget {
                   child: IconButton(
                     icon: const Icon(Icons.check),
                     color: Colors.white,
-                    onPressed: () => DatabaseService.responderSolicitacao(
-                        solicitacao.id, true),
+                    onPressed: () =>
+                        DatabaseService.responderSolicitacao(solicitacao, true),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -52,7 +52,7 @@ class SolicitacoesScreen extends StatelessWidget {
                     icon: const Icon(Icons.close),
                     color: Colors.white,
                     onPressed: () => DatabaseService.responderSolicitacao(
-                        solicitacao.id, false),
+                        solicitacao, false),
                   ),
                 ),
               ],

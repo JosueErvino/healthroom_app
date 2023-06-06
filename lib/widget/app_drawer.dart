@@ -39,9 +39,12 @@ class AppDrawer extends StatelessWidget {
                   leading: Stack(
                     children: [
                       const Icon(Icons.person),
-                      AppBadge(value: listaSolicitacoes!.length),
+                      listaSolicitacoes!.isNotEmpty
+                          ? AppBadge(value: listaSolicitacoes!.length)
+                          : const SizedBox.shrink(),
                     ],
                   ),
+                  enabled: listaSolicitacoes!.isNotEmpty,
                   title: const Text('Solicitações'),
                   onTap: () {
                     Navigator.push(
