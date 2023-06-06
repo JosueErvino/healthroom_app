@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:healthroom_app/model/contato.dart';
 import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/perfil.dart';
 import 'package:healthroom_app/model/solicitacao.dart';
@@ -170,5 +171,38 @@ class DatabaseService {
     }
 
     ref.collection('solicitacoes').doc(solicitacao.id).delete();
+  }
+
+  Future<List<Contato>> getContatos(String uid) {
+    var ref = _db.collection('usuarios').doc(uid);
+
+    return ref.get().then((value) async {
+      var data = value.data();
+      if (data == null) return [];
+
+      var contatos = <Contato>[];
+
+      if (data['Instrutor'] != null) {
+        final instrutor =
+            await _db.collection('usuarios').doc(data['Instrutor']).get();
+        contatos.add(Contato(
+          nome: instrutor['nome'],
+          telefone: instrutor['telefone'],
+          tipo: Perfil.instrutor,
+        ));
+      }
+
+      if (data['Nutricionista'] != null) {
+        final nutricionista =
+            await _db.collection('usuarios').doc(data['Nutricionista']).get();
+        contatos.add(Contato(
+          nome: nutricionista['nome'],
+          telefone: nutricionista['telefone'],
+          tipo: Perfil.nutricionista,
+        ));
+      }
+
+      return contatos;
+    });
   }
 }
