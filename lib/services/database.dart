@@ -9,9 +9,12 @@ import 'package:healthroom_app/model/usuario.dart';
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  static const _collectionUsuario = 'usuarios';
+  static const _collectionVinculos = 'vinculo';
+
   Future<void> criarUsuario(Usuario usuario) async {
     try {
-      await _db.collection('usuarios').doc(usuario.uid).set({
+      await _db.collection(_collectionUsuario).doc(usuario.uid).set({
         'nome': usuario.nome,
         'email': usuario.email,
         'telefone': usuario.telefone,
@@ -154,7 +157,7 @@ class DatabaseService {
         if (aluno == null) return;
         if (aluno[perfilProfissional] != null) {
           ref
-              .collection('vinculo')
+              .collection(_collectionVinculos)
               .doc(aluno[perfilProfissional])
               .set({snapshot.id: false}, SetOptions(merge: true));
         }
@@ -164,7 +167,7 @@ class DatabaseService {
         });
 
         ref
-            .collection('vinculo')
+            .collection(_collectionVinculos)
             .doc(solicitacao.idProfissional)
             .set({snapshot.id: true}, SetOptions(merge: true));
       });
@@ -204,5 +207,33 @@ class DatabaseService {
 
       return contatos;
     });
+  }
+
+  static Stream<DocumentSnapshot<Map<String, dynamic>>> getAlunosVinculados(
+      Usuario profissional) {
+    return FirebaseFirestore.instance
+        .collection(_collectionVinculos)
+        .doc(profissional.uid)
+        .snapshots();
+    //     .map((snap) {
+    //   Map<String, bool> resultado = {};
+    //   final vinculos = snap.data() ?? {};
+    //   vinculos.forEach((key, value) {
+    //     if (value is bool) {
+    //       resultado[key] = value;
+    //     }
+    //   });
+    //   return resultado;
+    // }
+    // );
+  }
+
+  static Future<List<Usuario>> getAlunosVinculadosInfo(
+      Map<String, bool> vinculos) async {
+    vinculos.removeWhere((uid, ativo) => !ativo);
+
+    final listaAlunosUid = vinculos.entries.toList();
+
+    return [];
   }
 }

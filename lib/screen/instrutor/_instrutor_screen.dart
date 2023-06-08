@@ -1,28 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/usuario.dart';
 import 'package:healthroom_app/provider/usuario_provider.dart';
+import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/services/dialog.dart';
 
 import 'dados_aluno_screen.dart';
 
-class InstrutorScreen extends StatelessWidget {
+class InstrutorScreen extends StatefulWidget {
   final String title;
 
-  final listaAlunos = [
-    'Aluno 1',
-    'Aluno 2',
-    'Aluno 3',
-    'Pendente 1',
-    'Pendente 2',
-  ];
+  const InstrutorScreen({super.key, required this.title});
 
-  InstrutorScreen({super.key, required this.title});
+  @override
+  State<InstrutorScreen> createState() => _InstrutorScreenState();
+}
+
+class _InstrutorScreenState extends State<InstrutorScreen> {
+  Map<String, bool> _docsVinculos = {};
 
   @override
   Widget build(BuildContext context) {
     Usuario usuario = UsuarioProvider.getProvider(context);
+
+    Future<List<Usuario>> getInfoAlunos =
+        DatabaseService.getAlunosVinculadosInfo(_docsVinculos);
 
     void handleSolicitarAluno() {
       showDialog(
@@ -71,7 +75,7 @@ class InstrutorScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text(widget.title),
         ),
         endDrawer: Drawer(
           child: ListView(
@@ -98,25 +102,66 @@ class InstrutorScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: ListView.builder(
-          itemCount: listaAlunos.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: const Icon(Icons.person),
-              title: Text(listaAlunos[index]),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DadosAlunoScreen(),
-                ),
-              ),
-            );
-          },
-        ),
+        body: StreamBuilder(
+            stream: DatabaseService.getAlunosVinculados(usuario),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('${snapshot.error}'),
+                );
+              }
+
+              if (snapshot.hasData) {
+                _docsVinculos = converterDocParaMap(snapshot.data);
+                return FutureBuilder<List<Usuario>>(
+                    future: getInfoAlunos,
+                    builder: (context, data) {
+                      final listaAlunos = [];
+                      return ListView.builder(
+                        itemCount: listaAlunos.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Text(listaAlunos[index].nome),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DadosAlunoScreen(),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    });
+              }
+
+              return const Loading();
+            }),
         floatingActionButton: FloatingActionButton(
           onPressed: handleSolicitarAluno,
           tooltip: 'Adicionar aluno',
           child: const Icon(Icons.add),
         ));
+  }
+
+  Map<String, bool> converterDocParaMap(
+      DocumentSnapshot<Map<String, dynamic>>? data) {
+    if (data == null || data.data() == null) return {};
+
+    Map<String, bool> resultado = {};
+
+    data.data()?.forEach((key, value) {
+      if (value is bool) {
+        resultado[key] = value;
+      }
+    });
+
+    return resultado;
   }
 }
