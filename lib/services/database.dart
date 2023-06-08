@@ -30,7 +30,7 @@ class DatabaseService {
     var ref = _db.collection('usuarios').doc(uid);
     var snapshot = await ref.get();
     var data = snapshot.data();
-    Usuario usuario = await Usuario.fromMap(data ?? {});
+    Usuario usuario = Usuario.fromMap(data ?? {});
     usuario.uid = uid;
     return usuario;
   }
@@ -215,25 +215,21 @@ class DatabaseService {
         .collection(_collectionVinculos)
         .doc(profissional.uid)
         .snapshots();
-    //     .map((snap) {
-    //   Map<String, bool> resultado = {};
-    //   final vinculos = snap.data() ?? {};
-    //   vinculos.forEach((key, value) {
-    //     if (value is bool) {
-    //       resultado[key] = value;
-    //     }
-    //   });
-    //   return resultado;
-    // }
-    // );
   }
 
-  static Future<List<Usuario>> getAlunosVinculadosInfo(
+  Future<List<Usuario>> getAlunosVinculadosInfo(
       Map<String, bool> vinculos) async {
     vinculos.removeWhere((uid, ativo) => !ativo);
 
-    final listaAlunosUid = vinculos.entries.toList();
+    final listaAlunosUid = vinculos.entries.map((e) => e.key).toList();
 
-    return [];
+    if (listaAlunosUid.isEmpty) return [];
+
+    final alunos = await _db
+        .collection('usuarios')
+        .where(FieldPath.documentId, whereIn: listaAlunosUid)
+        .get();
+
+    return alunos.docs.map((e) => Usuario.fromMap(e.data())).toList();
   }
 }

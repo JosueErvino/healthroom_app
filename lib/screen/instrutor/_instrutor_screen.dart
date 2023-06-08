@@ -19,14 +19,9 @@ class InstrutorScreen extends StatefulWidget {
 }
 
 class _InstrutorScreenState extends State<InstrutorScreen> {
-  Map<String, bool> _docsVinculos = {};
-
   @override
   Widget build(BuildContext context) {
     Usuario usuario = UsuarioProvider.getProvider(context);
-
-    Future<List<Usuario>> getInfoAlunos =
-        DatabaseService.getAlunosVinculadosInfo(_docsVinculos);
 
     void handleSolicitarAluno() {
       showDialog(
@@ -118,26 +113,44 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
               }
 
               if (snapshot.hasData) {
-                _docsVinculos = converterDocParaMap(snapshot.data);
                 return FutureBuilder<List<Usuario>>(
-                    future: getInfoAlunos,
-                    builder: (context, data) {
-                      final listaAlunos = [];
-                      return ListView.builder(
-                        itemCount: listaAlunos.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Text(listaAlunos[index].nome),
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DadosAlunoScreen(),
+                    future: DatabaseService().getAlunosVinculadosInfo(
+                      converterDocParaMap(snapshot.data),
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text('${snapshot.error}'),
+                        );
+                      }
+
+                      if (snapshot.hasData) {
+                        final listaAlunos = snapshot.data ?? [];
+                        return ListView.builder(
+                          itemCount: listaAlunos.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ListTile(
+                              leading: const Icon(Icons.person),
+                              title: Text(listaAlunos[index].nome),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const DadosAlunoScreen(),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          },
+                        );
+                      }
+
+                      return const Loading();
                     });
               }
 
