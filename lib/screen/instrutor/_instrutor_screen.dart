@@ -138,13 +138,8 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
                             return ListTile(
                               leading: const Icon(Icons.person),
                               title: Text(listaAlunos[index].nome),
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const DadosAlunoScreen(),
-                                ),
-                              ),
+                              onTap: () =>
+                                  abrirDetalhesAluno(listaAlunos[index]),
                             );
                           },
                         );
@@ -176,5 +171,16 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
     });
 
     return resultado;
+  }
+
+  abrirDetalhesAluno(Usuario aluno) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DadosAlunoScreen(
+          aluno: aluno,
+        ),
+      ),
+    );
   }
 }
