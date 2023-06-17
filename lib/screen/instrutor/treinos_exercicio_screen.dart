@@ -101,6 +101,13 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
       appBar: AppBar(
         title: const Text('Selecionar Exercício'),
       ),
+      floatingActionButton: Visibility(
+        visible: exercicio != null,
+        child: FloatingActionButton(
+          onPressed: handleSave,
+          child: const Icon(Icons.check),
+        ),
+      ),
       body: Center(
         child: ListView(
           children: [
@@ -170,16 +177,9 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: handleSave,
-                        child: const Text('Salvar'),
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.red,
                         ),
                         child: const Text('Excluir'),
                       ),
