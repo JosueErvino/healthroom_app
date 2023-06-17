@@ -7,6 +7,15 @@ class Exercicio {
   late String corpo;
   late String? observacoes;
 
+  static Exercicio opcoes(Map<String, dynamic> data) {
+    Exercicio exercicio = Exercicio();
+
+    exercicio.corpo = data['corpo'];
+    exercicio.descricao = data['descricao'];
+
+    return exercicio;
+  }
+
   static Exercicio fromMap(dynamic doc, String? id) {
     Exercicio exercicio = Exercicio();
 
@@ -19,5 +28,16 @@ class Exercicio {
     exercicio.observacoes = doc['observacoes'];
 
     return exercicio;
+  }
+
+  Map<String, Object?> toMap() {
+    return {
+      'carga': carga,
+      'repeticoes': repeticoes,
+      'series': series,
+      'descricao': descricao,
+      'corpo': corpo,
+      'observacoes': observacoes,
+    };
   }
 }

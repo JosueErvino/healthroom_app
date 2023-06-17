@@ -260,4 +260,23 @@ class DatabaseService {
           ),
         );
   }
+
+  Future<List<Exercicio>> getExercicios() async {
+    return _db.collection(_collectionExercicios).get().then(
+          (value) => value.docs
+              .map(
+                (e) => Exercicio.opcoes(e.data()),
+              )
+              .toList(),
+        );
+  }
+
+  void saveExercicio(String? idTreino, Exercicio exercicio) {
+    _db
+        .collection(_collectionTreinos)
+        .doc(idTreino)
+        .collection(_collectionExercicios)
+        .doc(exercicio.id)
+        .set(exercicio.toMap());
+  }
 }

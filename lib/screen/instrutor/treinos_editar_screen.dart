@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/treino.dart';
+import 'package:healthroom_app/screen/instrutor/treinos_exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/widget/circular_text.dart';
@@ -80,7 +81,7 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
               icon: const Icon(Icons.check),
               color: Colors.green,
               splashColor: Colors.greenAccent,
-              onPressed: () {},
+              onPressed: _handleSalvar,
             ),
             CircleAvatar(
               backgroundColor: Colors.black87,
@@ -88,7 +89,7 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
                 icon: const Icon(Icons.add),
                 color: Colors.white,
                 splashColor: Colors.white,
-                onPressed: () {},
+                onPressed: _handleAdicionarExercicio,
               ),
             ),
             IconButton(
@@ -102,6 +103,23 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
       ),
     );
   }
+
+  void _handleAdicionarExercicio() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TreinosExercicioScreen(),
+      ),
+    ).then((value) {
+      if (value != null && value is Exercicio) {
+        DatabaseService().saveExercicio(widget.treino?.id, value);
+      }
+    });
+  }
+
+  void _handleSalvar() {
+    // TODO: Implementar
+  }
 }
 
 class ListaExercicios extends StatelessWidget {
@@ -113,6 +131,21 @@ class ListaExercicios extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void handleEditarExercicio(Exercicio exercicio) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TreinosExercicioScreen(
+            exercicio: exercicio,
+          ),
+        ),
+      ).then((value) {
+        if (value != null && value is Exercicio) {
+          DatabaseService().saveExercicio(treino?.id, value);
+        }
+      });
+    }
+
     return StreamBuilder<List<Exercicio>>(
         stream: DatabaseService().getStreamTreinoById(treino?.id),
         builder: (context, snapshot) {
@@ -136,9 +169,9 @@ class ListaExercicios extends StatelessWidget {
                   trailing: const Icon(Icons.edit),
                   title: Text(exercicios[index].descricao),
                   subtitle: Text(
-                    '${exercicios[index].repeticoes} repetições de ${exercicios[index].series} - ${exercicios[index].carga} kg',
+                    '${exercicios[index].series} séries de ${exercicios[index].repeticoes} repetições - ${exercicios[index].carga} kg',
                   ),
-                  onTap: () => {},
+                  onTap: () => handleEditarExercicio(exercicios[index]),
                 );
               },
             );
