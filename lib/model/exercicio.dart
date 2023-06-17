@@ -1,5 +1,5 @@
 class Exercicio {
-  late String id;
+  String? id;
   late int carga;
   late int repeticoes;
   late int series;

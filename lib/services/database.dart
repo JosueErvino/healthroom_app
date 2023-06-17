@@ -247,9 +247,12 @@ class DatabaseService {
   }
 
   getStreamTreinoById(String? id) {
-    final treino = _db.collection(_collectionTreinos).doc(id);
-
-    return treino.collection(_collectionExercicios).snapshots().map(
+    return _db
+        .collection(_collectionTreinos)
+        .doc(id)
+        .collection(_collectionExercicios)
+        .snapshots()
+        .map(
           (value) => List<Exercicio>.from(
             value.docs.map(
               (e) => Exercicio.fromMap(

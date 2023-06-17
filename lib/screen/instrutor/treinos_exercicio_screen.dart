@@ -176,7 +176,7 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
                     const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: TextButton(
                         onPressed: () {},
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.red,
