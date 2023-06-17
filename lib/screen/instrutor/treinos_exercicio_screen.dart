@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/dialog.dart';
 
 class TreinosExercicioScreen extends StatefulWidget {
   final Exercicio? exercicio;
@@ -45,7 +46,41 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
       exercicio!.series = int.tryParse(_serieController.text) ?? 0;
       exercicio!.observacoes = _observacaoController.text;
 
-      Navigator.pop(context, exercicio);
+      Navigator.pop(context, {'exercicio': exercicio});
+    }
+
+    void handleRemove() {
+      if (exercicio == null) {
+        return;
+      }
+
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Remover exercício'),
+              content: const Text('Deseja remover o exercício?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancelar'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
+                  child: const Text('Remover'),
+                ),
+              ],
+            );
+          }).then(
+        (value) {
+          if (value) {
+            Navigator.pop(context, {'exercicio': exercicio, 'remove': true});
+          }
+        },
+      );
     }
 
     if (exercicio == null) {
@@ -200,7 +235,7 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: handleRemove,
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.red,
                       ),

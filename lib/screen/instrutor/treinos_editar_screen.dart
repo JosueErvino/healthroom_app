@@ -124,8 +124,11 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
         builder: (context) => const TreinosExercicioScreen(),
       ),
     ).then((value) {
-      if (value != null && value is Exercicio) {
-        DatabaseService().saveExercicio(widget.treino?.id, value);
+      if (value != null && value['exercicio'] is Exercicio) {
+        DatabaseService().saveExercicio(
+          widget.treino?.id,
+          value['exercicio'],
+        );
       }
     });
   }
@@ -153,8 +156,18 @@ class ListaExercicios extends StatelessWidget {
           ),
         ),
       ).then((value) {
-        if (value != null && value is Exercicio) {
-          DatabaseService().saveExercicio(treino?.id, value);
+        if (value != null && value['exercicio'] is Exercicio) {
+          if (value['remove']) {
+            DatabaseService().removeExercicioDoTreino(
+              treino?.id,
+              value['exercicio'],
+            );
+          } else {
+            DatabaseService().saveExercicio(
+              treino?.id,
+              value['exercicio'],
+            );
+          }
         }
       });
     }

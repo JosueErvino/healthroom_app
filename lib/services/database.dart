@@ -282,4 +282,13 @@ class DatabaseService {
         .doc(exercicio.id)
         .set(exercicio.toMap());
   }
+
+  void removeExercicioDoTreino(String? id, Exercicio exercicio) {
+    _db
+        .collection(_collectionTreinos)
+        .doc(id)
+        .collection(_collectionExercicios)
+        .doc(exercicio.id)
+        .delete();
+  }
 }
