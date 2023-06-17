@@ -10,9 +10,9 @@ class Usuario {
   late double peso;
   late double altura;
 
-  static Future<Usuario> fromMap(Map<String, dynamic> data) {
+  static Usuario fromMap(Map<String, dynamic> data) {
     if (data.isEmpty) {
-      return Future.error('Usuário não encontrado');
+      throw 'Usuário não encontrado';
     }
     Usuario usuario = Usuario();
     usuario.nome = data['nome'];
@@ -22,7 +22,7 @@ class Usuario {
     usuario.perfil = Perfil.fromValue(data['perfil']);
     usuario.peso = data['peso'] ?? 0.0;
     usuario.altura = data['altura'] ?? 0.0;
-    return Future.value(usuario);
+    return usuario;
   }
 
   bool isInstrutor() {
