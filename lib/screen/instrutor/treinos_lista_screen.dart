@@ -24,6 +24,8 @@ class _TreinosListaScreenState extends State<TreinosListaScreen> {
           builder: (context) {
             return TreinosEditarScreen(
               treino: treino,
+              uid: widget.uid,
+              nome: widget.nome,
             );
           },
         ),
