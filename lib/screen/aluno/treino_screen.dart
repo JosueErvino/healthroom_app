@@ -36,7 +36,6 @@ class TreinoScreen extends StatelessWidget {
           if (snapshot.hasData) {
             final treinos = snapshot.data ?? [];
 
-            // TODO: Adicionar titulo da tela
             return ListView.separated(
               separatorBuilder: (context, index) => const Divider(),
               itemCount: treinos.length,

@@ -3,6 +3,8 @@ import 'package:healthroom_app/model/usuario.dart';
 import 'package:healthroom_app/screen/instrutor/imc_aluno_screen.dart';
 import 'package:healthroom_app/services/database.dart';
 
+import 'treinos_lista_screen.dart';
+
 class DadosAlunoScreen extends StatelessWidget {
   final Usuario aluno;
   const DadosAlunoScreen({super.key, required this.aluno});
@@ -31,7 +33,15 @@ class DadosAlunoScreen extends StatelessWidget {
     }
 
     goToListaDeTreinos(Usuario aluno) {
-      // TODO: Implementar
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TreinosListaScreen(
+            nome: aluno.nome,
+            uid: aluno.uid,
+          ),
+        ),
+      );
     }
 
     return Scaffold(
