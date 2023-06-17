@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/screen/instrutor/imc_aluno_screen.dart';
+import 'package:healthroom_app/services/database.dart';
 
 class DadosAlunoScreen extends StatelessWidget {
   final Usuario aluno;
@@ -7,6 +9,31 @@ class DadosAlunoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    goToDadosAntropometricos(Usuario aluno) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ImcAlunoScreen(
+            nome: aluno.nome,
+            peso: aluno.peso,
+            altura: aluno.altura,
+          ),
+        ),
+      ).then((info) {
+        if (info["altura"] != aluno.altura || info["peso"] != aluno.peso) {
+          DatabaseService().atualizarDadosAntropometricos(
+            aluno.uid,
+            info["altura"],
+            info["peso"],
+          );
+        }
+      });
+    }
+
+    goToListaDeTreinos(Usuario aluno) {
+      // TODO: Implementar
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(aluno.nome),
@@ -57,6 +84,21 @@ class DadosAlunoScreen extends StatelessWidget {
             const Divider(
               color: Colors.black,
             ),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.accessibility),
+                  title: const Text("Dados Antropométricos"),
+                  onTap: () => goToDadosAntropometricos(aluno),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.fitness_center),
+                  title: const Text("Treinos"),
+                  onTap: () => goToListaDeTreinos(aluno),
+                )
+              ],
+            )
           ],
         ),
       ),

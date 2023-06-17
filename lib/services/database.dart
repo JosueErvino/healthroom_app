@@ -217,19 +217,30 @@ class DatabaseService {
         .snapshots();
   }
 
-  Future<List<Usuario>> getAlunosVinculadosInfo(
-      Map<String, bool> vinculos) async {
+  Stream<List<Usuario>> getAlunosVinculadosInfo(Map<String, bool> vinculos) {
     vinculos.removeWhere((uid, ativo) => !ativo);
 
     final listaAlunosUid = vinculos.entries.map((e) => e.key).toList();
 
-    if (listaAlunosUid.isEmpty) return [];
+    if (listaAlunosUid.isEmpty) return Stream.value([]);
 
-    final alunos = await _db
+    return _db
         .collection('usuarios')
         .where(FieldPath.documentId, whereIn: listaAlunosUid)
-        .get();
+        .snapshots()
+        .map((alunos) {
+      return alunos.docs.map((e) {
+        final user = Usuario.fromMap(e.data());
+        user.uid = e.id;
+        return user;
+      }).toList();
+    });
+  }
 
-    return alunos.docs.map((e) => Usuario.fromMap(e.data())).toList();
+  void atualizarDadosAntropometricos(String uid, double altura, double peso) {
+    _db.collection('usuarios').doc(uid).update({
+      'altura': altura,
+      'peso': peso,
+    });
   }
 }

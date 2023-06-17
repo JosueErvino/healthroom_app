@@ -55,11 +55,12 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
                         .solicitarVinculo(usuario, emailController.text)
                         .then((value) => Navigator.pop(context, 'OK'))
                         .catchError(
-                            (onError) => DialogService().showAlertDialog(
-                                  context,
-                                  const Text('Erro'),
-                                  onError.toString(),
-                                ));
+                          (onError) => DialogService().showAlertDialog(
+                            context,
+                            const Text('Erro'),
+                            onError.toString(),
+                          ),
+                        );
                   },
                   child: const Text('OK'),
                 ),
@@ -113,8 +114,8 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
               }
 
               if (snapshot.hasData) {
-                return FutureBuilder<List<Usuario>>(
-                    future: DatabaseService().getAlunosVinculadosInfo(
+                return StreamBuilder<List<Usuario>>(
+                    stream: DatabaseService().getAlunosVinculadosInfo(
                       converterDocParaMap(snapshot.data),
                     ),
                     builder: (context, snapshot) {
