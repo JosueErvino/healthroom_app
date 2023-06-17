@@ -10,6 +10,7 @@ class UsuarioProvider extends ChangeNotifier {
   void setUsuario(Usuario usuario, String uid) {
     _usuario = usuario;
     usuario.uid = uid;
+    // TODO: Ver erro que está estourando aqui
     notifyListeners();
   }
 
