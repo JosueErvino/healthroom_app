@@ -11,6 +11,8 @@ class DatabaseService {
 
   static const _collectionUsuario = 'usuarios';
   static const _collectionVinculos = 'vinculo';
+  static const _collectionTreinos = 'treinos';
+  static const _collectionExercicios = 'exercicios';
 
   Future<void> criarUsuario(Usuario usuario) async {
     try {
@@ -242,5 +244,20 @@ class DatabaseService {
       'altura': altura,
       'peso': peso,
     });
+  }
+
+  getStreamTreinoById(String? id) {
+    final treino = _db.collection(_collectionTreinos).doc(id);
+
+    return treino.collection(_collectionExercicios).snapshots().map(
+          (value) => List<Exercicio>.from(
+            value.docs.map(
+              (e) => Exercicio.fromMap(
+                e.data(),
+                e.id,
+              ),
+            ),
+          ),
+        );
   }
 }

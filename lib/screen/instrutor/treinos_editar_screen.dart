@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/treino.dart';
+import 'package:healthroom_app/screen/loading_screen.dart';
+import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/widget/circular_text.dart';
 
 class TreinosEditarScreen extends StatefulWidget {
   final Treino? treino;
@@ -31,13 +35,15 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
       appBar: AppBar(
         title: Text(widget.treino?.descricao ?? "Novo Treino"),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(5.0),
         child: ListView(
           children: [
             TextField(
               controller: _descricaoController,
               decoration: const InputDecoration(labelText: 'Nome do treino'),
             ),
+            const SizedBox(height: 10),
             TextField(
               enabled: false,
               controller: TextEditingController(
@@ -47,8 +53,8 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
             ),
             const Divider(
               color: Colors.black,
+              height: 30,
             ),
-            const SizedBox(height: 20),
             const Text(
               'Exercícios',
               textAlign: TextAlign.center,
@@ -56,6 +62,9 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            ListaExercicios(
+              treino: widget.treino,
             ),
           ],
         ),
@@ -92,5 +101,49 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
         ),
       ),
     );
+  }
+}
+
+class ListaExercicios extends StatelessWidget {
+  final Treino? treino;
+  const ListaExercicios({
+    super.key,
+    required this.treino,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<Exercicio>>(
+        stream: DatabaseService().getStreamTreinoById(treino?.id),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            Navigator.pop(context);
+          }
+
+          if (snapshot.hasData) {
+            final exercicios = snapshot.data ?? [];
+
+            return ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: exercicios.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: CircularText(
+                    text: '${index + 1}',
+                  ),
+                  trailing: const Icon(Icons.edit),
+                  title: Text(exercicios[index].descricao),
+                  subtitle: Text(
+                    '${exercicios[index].repeticoes} repetições de ${exercicios[index].series} - ${exercicios[index].carga} kg',
+                  ),
+                  onTap: () => {},
+                );
+              },
+            );
+          }
+          return const Loading();
+        });
   }
 }
