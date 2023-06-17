@@ -38,36 +38,49 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(5.0),
-        child: ListView(
-          children: [
-            TextField(
-              controller: _descricaoController,
-              decoration: const InputDecoration(labelText: 'Nome do treino'),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              enabled: false,
-              controller: TextEditingController(
-                text: widget.nome,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _descricaoController,
+                      decoration:
+                          const InputDecoration(labelText: 'Nome do treino'),
+                    ),
+                    const Divider(
+                      height: 30,
+                    ),
+                    TextField(
+                      enabled: false,
+                      controller: TextEditingController(
+                        text: widget.nome,
+                      ),
+                      decoration: const InputDecoration(labelText: 'Aluno'),
+                    ),
+                    const Divider(
+                      color: Colors.black,
+                      height: 30,
+                    ),
+                    const Text(
+                      'Exercícios',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              decoration: const InputDecoration(labelText: 'Aluno'),
-            ),
-            const Divider(
-              color: Colors.black,
-              height: 30,
-            ),
-            const Text(
-              'Exercícios',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ListaExercicios(
+            ];
+          },
+          body: Builder(builder: (context) {
+            return ListaExercicios(
               treino: widget.treino,
-            ),
-          ],
+            );
+          }),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -157,7 +170,6 @@ class ListaExercicios extends StatelessWidget {
             final exercicios = snapshot.data ?? [];
 
             return ListView.separated(
-              scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: exercicios.length,
               separatorBuilder: (context, index) => const Divider(),

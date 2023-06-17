@@ -59,7 +59,13 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.arrow_back),
                 )
-              : null,
+              : IconButton(
+                  onPressed: () => setState(() {
+                    exercicio = exercicioAuxiliar;
+                    exercicioAuxiliar = null;
+                  }),
+                  icon: const Icon(Icons.arrow_back),
+                ),
         ),
         body: FutureBuilder<List<Exercicio>>(
           future: DatabaseService().getExercicios(),
@@ -86,7 +92,21 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
                   subtitle: Text(exerciciosDisponiveis[index].corpo),
                   onTap: () {
                     setState(
-                      () => exercicio = exerciciosDisponiveis[index],
+                      () => {
+                        if (exercicioAuxiliar != null)
+                          {
+                            exercicioAuxiliar?.descricao =
+                                exerciciosDisponiveis[index].descricao,
+                            exercicioAuxiliar?.corpo =
+                                exerciciosDisponiveis[index].corpo,
+                            exercicio = exercicioAuxiliar,
+                            exercicioAuxiliar = null,
+                          }
+                        else
+                          {
+                            exercicio = exerciciosDisponiveis[index],
+                          }
+                      },
                     );
                   },
                 );
@@ -108,88 +128,90 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
           child: const Icon(Icons.check),
         ),
       ),
-      body: Center(
-        child: ListView(
-          children: [
-            Visibility(
-              visible: exercicio != null,
-              child: ListTile(
-                title: Text(exercicio?.descricao ?? ''),
-                subtitle: Text(exercicio?.corpo ?? ''),
-                trailing: CircleAvatar(
-                  backgroundColor: Colors.green,
-                  child: IconButton(
-                    color: Colors.white,
-                    onPressed: () {},
-                    icon: const Icon(Icons.edit),
+      body: ListView(
+        children: [
+          Visibility(
+            visible: exercicio != null,
+            child: ListTile(
+              title: Text(exercicio?.descricao ?? ''),
+              subtitle: Text(exercicio?.corpo ?? ''),
+              trailing: CircleAvatar(
+                backgroundColor: Colors.green,
+                child: IconButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      exercicioAuxiliar = exercicio;
+                      exercicio = null;
+                    });
+                  },
+                  icon: const Icon(Icons.edit),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: exercicio != null,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          controller: _serieController,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'Séries'),
+                        ),
+                      ),
+                      // Space
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: TextField(
+                          controller: _repeticoesController,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'Repetições'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: TextField(
+                          controller: _cargaController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(labelText: 'Carga'),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: _observacaoController,
+                    keyboardType: TextInputType.text,
+                    minLines: 3,
+                    maxLines: 5,
+                    decoration: const InputDecoration(
+                      labelText: 'Observações',
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                      ),
+                      child: const Text('Excluir'),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Visibility(
-              visible: exercicio != null,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: TextField(
-                            controller: _serieController,
-                            keyboardType: TextInputType.number,
-                            decoration:
-                                const InputDecoration(labelText: 'Séries'),
-                          ),
-                        ),
-                        // Space
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: TextField(
-                            controller: _repeticoesController,
-                            keyboardType: TextInputType.number,
-                            decoration:
-                                const InputDecoration(labelText: 'Repetições'),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: TextField(
-                            controller: _cargaController,
-                            keyboardType: TextInputType.number,
-                            decoration:
-                                const InputDecoration(labelText: 'Carga'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: _observacaoController,
-                      keyboardType: TextInputType.text,
-                      minLines: 3,
-                      maxLines: 5,
-                      decoration: const InputDecoration(
-                        labelText: 'Observações',
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          foregroundColor: Colors.red,
-                        ),
-                        child: const Text('Excluir'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
