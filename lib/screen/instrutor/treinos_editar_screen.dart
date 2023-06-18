@@ -23,11 +23,21 @@ class TreinosEditarScreen extends StatefulWidget {
 
 class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
   final TextEditingController _descricaoController = TextEditingController();
+  String? idTreino;
 
   @override
   void initState() {
     super.initState();
     _descricaoController.text = widget.treino?.descricao ?? "";
+    idTreino = widget.treino?.id;
+
+    if (widget.treino == null) {
+      DatabaseService().criarTreino(widget.uid).then((value) {
+        setState(() {
+          idTreino = value;
+        });
+      });
+    }
   }
 
   @override
@@ -46,8 +56,9 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
                   children: [
                     TextField(
                       controller: _descricaoController,
-                      decoration:
-                          const InputDecoration(labelText: 'Nome do treino'),
+                      decoration: const InputDecoration(
+                        labelText: 'Nome do treino',
+                      ),
                     ),
                     const Divider(
                       height: 30,
@@ -77,8 +88,11 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
             ];
           },
           body: Builder(builder: (context) {
-            return ListaExercicios(
-              treino: widget.treino,
+            return Visibility(
+              visible: idTreino != null,
+              child: ListaExercicios(
+                idTreino: idTreino ?? "",
+              ),
             );
           }),
         ),
@@ -126,7 +140,7 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
     ).then((value) {
       if (value != null && value['exercicio'] is Exercicio) {
         DatabaseService().saveExercicio(
-          widget.treino?.id,
+          idTreino,
           value['exercicio'],
         );
       }
@@ -139,10 +153,10 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
 }
 
 class ListaExercicios extends StatelessWidget {
-  final Treino? treino;
+  final String idTreino;
   const ListaExercicios({
     super.key,
-    required this.treino,
+    required this.idTreino,
   });
 
   @override
@@ -159,12 +173,12 @@ class ListaExercicios extends StatelessWidget {
         if (value != null && value['exercicio'] is Exercicio) {
           if (value['remove']) {
             DatabaseService().removeExercicioDoTreino(
-              treino?.id,
+              idTreino,
               value['exercicio'],
             );
           } else {
             DatabaseService().saveExercicio(
-              treino?.id,
+              idTreino,
               value['exercicio'],
             );
           }
@@ -173,7 +187,7 @@ class ListaExercicios extends StatelessWidget {
     }
 
     return StreamBuilder<List<Exercicio>>(
-        stream: DatabaseService().getStreamTreinoById(treino?.id),
+        stream: DatabaseService().getStreamTreinoById(idTreino),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             Navigator.pop(context);

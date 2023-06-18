@@ -39,12 +39,24 @@ class DatabaseService {
 
   Future<List<Treino>> getTreinosUsuario(String userID) async {
     var ref = _db.collection('treinos');
-    var snapshot = ref.where('usuario', isEqualTo: userID);
+    var snapshot = ref
+        .where(
+          'usuario',
+          isEqualTo: userID,
+        )
+        .where(
+          'ativo',
+          isEqualTo: true,
+        );
 
     var treinos = await snapshot.get();
 
-    return List<Treino>.from(
-        treinos.docs.map((doc) => Treino.fromMap(doc.data(), doc.id)).toList());
+    return List<Treino>.from(treinos.docs
+        .map((doc) => Treino.fromMap(
+              doc.data(),
+              doc.id,
+            ))
+        .toList());
   }
 
   Future<List<Exercicio>> getTreinoById(String id) {
@@ -290,5 +302,11 @@ class DatabaseService {
         .collection(_collectionExercicios)
         .doc(exercicio.id)
         .delete();
+  }
+
+  Future<String> criarTreino(String idUsuario) {
+    return _db.collection(_collectionTreinos).add({
+      'usuario': idUsuario,
+    }).then((value) => value.id);
   }
 }
