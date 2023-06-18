@@ -45,8 +45,10 @@ class _MyAppState extends State<MyApp> {
             );
           }
 
-          return const MaterialApp(
-            home: Loading(),
+          return MaterialApp(
+            theme: appTheme,
+            home: const Loading(),
+            debugShowCheckedModeBanner: false,
           );
         });
   }
