@@ -45,7 +45,9 @@ class _MyAppState extends State<MyApp> {
             );
           }
 
-          return const Loading();
+          return const MaterialApp(
+            home: Loading(),
+          );
         });
   }
 }
