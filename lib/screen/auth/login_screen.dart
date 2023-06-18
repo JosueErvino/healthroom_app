@@ -35,36 +35,39 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Image(
-              image: AssetImage('assets/img/logo.png'),
-            ),
-            TextField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              onEditingComplete: () => FocusScope.of(context).nextFocus(),
-              decoration: const InputDecoration(
-                labelText: 'E-mail',
+        child: SingleChildScrollView(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            runSpacing: 30,
+            children: [
+              const Image(
+                image: AssetImage('assets/img/logo.png'),
               ),
-            ),
-            TextField(
-              controller: _senhaController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Senha',
+              TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                decoration: const InputDecoration(
+                  labelText: 'E-mail',
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: handleLogin,
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: handleCadastro,
-              child: const Text('Cadastre-se aqui!'),
-            ),
-          ],
+              TextField(
+                controller: _senhaController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Senha',
+                ),
+              ),
+              ElevatedButton(
+                onPressed: handleLogin,
+                child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: handleCadastro,
+                child: const Text('Cadastre-se aqui!'),
+              ),
+            ],
+          ),
         ),
       ),
     );
