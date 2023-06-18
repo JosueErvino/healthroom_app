@@ -38,7 +38,7 @@ class DatabaseService {
   }
 
   Future<List<Treino>> getTreinosUsuario(String userID) async {
-    var ref = _db.collection('treinos');
+    var ref = _db.collection(_collectionTreinos);
     var snapshot = ref
         .where(
           'usuario',
@@ -57,6 +57,16 @@ class DatabaseService {
               doc.id,
             ))
         .toList());
+  }
+
+  Stream<List<Treino>> streamTreinosUsuario(String userId) {
+    return _db
+        .collection(_collectionTreinos)
+        .where('usuario', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Treino.fromMap(doc.data(), doc.id))
+            .toList());
   }
 
   Future<List<Exercicio>> getTreinoById(String id) {
@@ -307,6 +317,14 @@ class DatabaseService {
   Future<String> criarTreino(String idUsuario) {
     return _db.collection(_collectionTreinos).add({
       'usuario': idUsuario,
+      'descricao': 'Treino ${DateTime.now().toString()}}',
+      'ativo': true,
     }).then((value) => value.id);
+  }
+
+  Future<void> removerTreino(String? idTreino) {
+    if (idTreino == null) throw 'Treino não encontrado';
+
+    return _db.collection(_collectionTreinos).doc(idTreino).delete();
   }
 }

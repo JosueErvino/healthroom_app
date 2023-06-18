@@ -123,7 +123,7 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
               icon: const Icon(Icons.delete),
               color: Colors.red,
               splashColor: Colors.redAccent,
-              onPressed: () {},
+              onPressed: _handleRemoverTreino,
             ),
           ],
         ),
@@ -149,6 +149,12 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
 
   void _handleSalvar() {
     // TODO: Implementar
+  }
+
+  void _handleRemoverTreino() {
+    DatabaseService()
+        .removerTreino(idTreino)
+        .then((value) => Navigator.pop(context));
   }
 }
 

@@ -40,8 +40,8 @@ class _TreinosListaScreenState extends State<TreinosListaScreen> {
         onPressed: () => editarTreino(null),
         child: const Icon(Icons.add),
       ),
-      body: FutureBuilder<List<Treino>>(
-        future: DatabaseService().getTreinosUsuario(widget.uid),
+      body: StreamBuilder<List<Treino>>(
+        stream: DatabaseService().streamTreinosUsuario(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
