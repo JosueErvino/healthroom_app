@@ -327,4 +327,14 @@ class DatabaseService {
 
     return _db.collection(_collectionTreinos).doc(idTreino).delete();
   }
+
+  Future<void> saveTreino(String? idTreino, String text) {
+    if (idTreino == null) throw 'Treino não encontrado';
+
+    if (text == '') throw 'Descrição não pode ser vazia';
+
+    return _db.collection(_collectionTreinos).doc(idTreino).update({
+      'descricao': text,
+    });
+  }
 }

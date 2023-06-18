@@ -148,7 +148,12 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
   }
 
   void _handleSalvar() {
-    // TODO: Implementar
+    DatabaseService()
+        .saveTreino(
+          idTreino,
+          _descricaoController.text,
+        )
+        .then((value) => Navigator.pop(context));
   }
 
   void _handleRemoverTreino() {
