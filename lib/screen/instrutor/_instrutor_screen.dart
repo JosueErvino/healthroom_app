@@ -179,7 +179,7 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => DadosAlunoScreen(
-          aluno: aluno,
+          info: aluno,
         ),
       ),
     );

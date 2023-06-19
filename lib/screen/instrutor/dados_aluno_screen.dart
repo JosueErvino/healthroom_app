@@ -5,9 +5,21 @@ import 'package:healthroom_app/services/database.dart';
 
 import 'treinos_lista_screen.dart';
 
-class DadosAlunoScreen extends StatelessWidget {
-  final Usuario aluno;
-  const DadosAlunoScreen({super.key, required this.aluno});
+class DadosAlunoScreen extends StatefulWidget {
+  final Usuario info;
+  const DadosAlunoScreen({super.key, required this.info});
+
+  @override
+  State<DadosAlunoScreen> createState() => _DadosAlunoScreenState();
+}
+
+class _DadosAlunoScreenState extends State<DadosAlunoScreen> {
+  late Usuario aluno;
+  @override
+  void initState() {
+    super.initState();
+    aluno = widget.info;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +40,10 @@ class DadosAlunoScreen extends StatelessWidget {
             info["altura"],
             info["peso"],
           );
+          setState(() {
+            aluno.altura = info["altura"];
+            aluno.peso = info["peso"];
+          });
         }
       });
     }
