@@ -9,12 +9,16 @@ import 'package:healthroom_app/services/whatsapp.dart';
 class ContatoScreen extends StatelessWidget {
   const ContatoScreen({super.key});
 
-  void _abrirWhatsapp(String telefone) {
-    WhatsappService.abrirConversa(telefone);
-  }
-
   @override
   Widget build(BuildContext context) {
+    void abrirWhatsapp(String telefone) {
+      if (Theme.of(context).platform == TargetPlatform.android) {
+        WhatsappService.abrirConversaAndroid(telefone);
+      } else {
+        WhatsappService.abrirConversa(telefone);
+      }
+    }
+
     Usuario usuario = UsuarioProvider.getProvider(context);
     final Future<List<Contato>> getContatos =
         DatabaseService().getContatos(usuario.uid);
@@ -51,7 +55,7 @@ class ContatoScreen extends StatelessWidget {
                       title: Text(contato.nome),
                       subtitle: Text(contato.tipo.toString()),
                       trailing: const Icon(Icons.chat_bubble),
-                      onTap: () => _abrirWhatsapp(contato.telefone),
+                      onTap: () => abrirWhatsapp(contato.telefone),
                     ),
                   ),
                 );
