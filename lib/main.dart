@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/provider/usuario_provider.dart';
-import 'package:healthroom_app/routes.dart';
+import 'package:healthroom_app/screen/home_screen.dart';
 import 'package:healthroom_app/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               title: 'Health Room',
               theme: appTheme,
-              routes: appRoutes,
+              home: const HomeScreen(),
               debugShowCheckedModeBanner: false,
             );
           }
