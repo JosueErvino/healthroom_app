@@ -19,7 +19,9 @@ class TreinoScreen extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => ListaExercicioScreen(treino: treino),
         ),
-      );
+      ).then((value) {
+        if (value == true) DatabaseService().concluirTreino(treino);
+      });
     }
 
     return FutureBuilder<List<Treino>>(
