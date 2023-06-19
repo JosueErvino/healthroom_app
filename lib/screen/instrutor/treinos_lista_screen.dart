@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/treino.dart';
+import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/instrutor/treinos_editar_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
@@ -17,7 +19,9 @@ class TreinosListaScreen extends StatefulWidget {
 class _TreinosListaScreenState extends State<TreinosListaScreen> {
   @override
   Widget build(BuildContext context) {
-    editarTreino(Treino? treino) {
+    Usuario usuario = UsuarioProvider.getProvider(context);
+
+    abrirTreino(Treino? treino) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -36,9 +40,12 @@ class _TreinosListaScreenState extends State<TreinosListaScreen> {
       appBar: AppBar(
         title: Text(widget.nome),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => editarTreino(null),
-        child: const Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: usuario.isInstrutor(),
+        child: FloatingActionButton(
+          onPressed: () => abrirTreino(null),
+          child: const Icon(Icons.add),
+        ),
       ),
       body: StreamBuilder<List<Treino>>(
         stream: DatabaseService().streamTreinosUsuario(widget.uid),
@@ -62,8 +69,10 @@ class _TreinosListaScreenState extends State<TreinosListaScreen> {
                 subtitle: Text(
                   "Ultima execução: ${getDataUltimaExecucao(treinos[index])}",
                 ),
-                trailing: const Icon(Icons.edit),
-                onTap: () => editarTreino(treinos[index]),
+                trailing: usuario.isInstrutor()
+                    ? const Icon(Icons.edit)
+                    : const Icon(Icons.info_outline),
+                onTap: () => abrirTreino(treinos[index]),
               ),
             );
           }

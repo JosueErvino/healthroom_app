@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/model/treino.dart';
+import 'package:healthroom_app/model/usuario.dart';
+import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/instrutor/treinos_exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
@@ -42,6 +44,8 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Usuario usuario = UsuarioProvider.getProvider(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.treino?.descricao ?? "Novo Treino"),
@@ -59,6 +63,7 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Nome do treino',
                       ),
+                      enabled: usuario.isInstrutor(),
                     ),
                     const Divider(
                       height: 30,
@@ -92,40 +97,44 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
               visible: idTreino != null,
               child: ListaExercicios(
                 idTreino: idTreino ?? "",
+                usuario: usuario,
               ),
             );
           }),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        height: 70,
-        elevation: 0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.check),
-              color: Colors.green,
-              splashColor: Colors.greenAccent,
-              onPressed: _handleSalvar,
-            ),
-            CircleAvatar(
-              backgroundColor: Colors.black87,
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                color: Colors.white,
-                splashColor: Colors.white,
-                onPressed: _handleAdicionarExercicio,
+      bottomNavigationBar: Visibility(
+        visible: usuario.isInstrutor(),
+        child: BottomAppBar(
+          color: Colors.transparent,
+          height: 70,
+          elevation: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.check),
+                color: Colors.green,
+                splashColor: Colors.greenAccent,
+                onPressed: _handleSalvar,
               ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              color: Colors.red,
-              splashColor: Colors.redAccent,
-              onPressed: _handleRemoverTreino,
-            ),
-          ],
+              CircleAvatar(
+                backgroundColor: Colors.black87,
+                child: IconButton(
+                  icon: const Icon(Icons.add),
+                  color: Colors.white,
+                  splashColor: Colors.white,
+                  onPressed: _handleAdicionarExercicio,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                color: Colors.red,
+                splashColor: Colors.redAccent,
+                onPressed: _handleRemoverTreino,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -165,13 +174,18 @@ class _TreinosEditarScreenState extends State<TreinosEditarScreen> {
 
 class ListaExercicios extends StatelessWidget {
   final String idTreino;
+  final Usuario usuario;
+
   const ListaExercicios({
     super.key,
     required this.idTreino,
+    required this.usuario,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool isInstrutor() => usuario.isInstrutor();
+
     void handleEditarExercicio(Exercicio exercicio) {
       Navigator.push(
         context,
@@ -216,12 +230,14 @@ class ListaExercicios extends StatelessWidget {
                   leading: CircularText(
                     text: '${index + 1}',
                   ),
-                  trailing: const Icon(Icons.edit),
+                  trailing: isInstrutor() ? const Icon(Icons.edit) : null,
                   title: Text(exercicios[index].descricao),
                   subtitle: Text(
                     '${exercicios[index].series} séries de ${exercicios[index].repeticoes} repetições - ${exercicios[index].carga} kg',
                   ),
-                  onTap: () => handleEditarExercicio(exercicios[index]),
+                  onTap: () => isInstrutor()
+                      ? handleEditarExercicio(exercicios[index])
+                      : null,
                 );
               },
             );

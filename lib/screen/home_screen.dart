@@ -58,13 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         Provider.of<UsuarioProvider>(context, listen: false);
                     userProvider.setUsuario(snapshot.data!, uid);
 
-                    if (userProvider.usuario.isInstrutor()) {
-                      return InstrutorScreen(
+                    if (userProvider.usuario.isAluno()) {
+                      return AlunoScreen(
                         title: displayName,
                       );
                     }
-
-                    return AlunoScreen(
+                    return InstrutorScreen(
                       title: displayName,
                     );
                   }
