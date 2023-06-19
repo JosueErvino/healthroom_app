@@ -28,4 +28,8 @@ class Usuario {
   bool isInstrutor() {
     return perfil == Perfil.instrutor;
   }
+
+  bool isAluno() {
+    return perfil == Perfil.aluno;
+  }
 }
