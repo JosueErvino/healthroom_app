@@ -133,7 +133,7 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
 
                       if (snapshot.hasData) {
                         final listaAlunos = snapshot.data ?? [];
-                        return ListView.builder(
+                        return ListView.separated(
                           itemCount: listaAlunos.length,
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
@@ -143,6 +143,7 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
                                   abrirDetalhesAluno(listaAlunos[index]),
                             );
                           },
+                          separatorBuilder: (context, i) => const Divider(),
                         );
                       }
 
