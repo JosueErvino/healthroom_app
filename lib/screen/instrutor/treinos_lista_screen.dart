@@ -61,20 +61,24 @@ class _TreinosListaScreenState extends State<TreinosListaScreen> {
           if (snapshot.hasData) {
             final treinos = snapshot.data ?? [];
 
-            return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: treinos.length,
-              itemBuilder: (context, index) => ListTile(
-                title: Text(treinos[index].descricao),
-                subtitle: Text(
-                  "Ultima execução: ${getDataUltimaExecucao(treinos[index])}",
-                ),
-                trailing: usuario.isInstrutor()
-                    ? const Icon(Icons.edit)
-                    : const Icon(Icons.info_outline),
-                onTap: () => abrirTreino(treinos[index]),
-              ),
-            );
+            return treinos.isEmpty
+                ? const Center(
+                    child: Text('Nenhum treino cadastrado!'),
+                  )
+                : ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: treinos.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(treinos[index].descricao),
+                      subtitle: Text(
+                        "Ultima execução: ${getDataUltimaExecucao(treinos[index])}",
+                      ),
+                      trailing: usuario.isInstrutor()
+                          ? const Icon(Icons.edit)
+                          : const Icon(Icons.info_outline),
+                      onTap: () => abrirTreino(treinos[index]),
+                    ),
+                  );
           }
 
           return const Loading();

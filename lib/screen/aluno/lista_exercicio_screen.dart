@@ -90,30 +90,34 @@ class _ListaExercicioScreenState extends State<ListaExercicioScreen> {
                 appBar: AppBar(
                   title: Text(widget.treino.descricao),
                 ),
-                body: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: exercicios.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Icon(
-                        !isExercicioConcluido(exercicios[index])
-                            ? Icons.fitness_center
-                            : Icons.check,
+                body: exercicios.isEmpty
+                    ? const Center(
+                        child: Text('Nenhum exercício cadastrado!'),
+                      )
+                    : ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: exercicios.length,
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: Icon(
+                              !isExercicioConcluido(exercicios[index])
+                                  ? Icons.fitness_center
+                                  : Icons.check,
+                            ),
+                            trailing: CircularText(
+                              text: '${exercicios[index].carga} kg',
+                            ),
+                            title: Text(exercicios[index].descricao),
+                            subtitle: Text(
+                              '${exercicios[index].repeticoes} x ${exercicios[index].series} - ${exercicios[index].carga} kg',
+                            ),
+                            onTap: () => handleOpenExercicio(exercicios[index]),
+                            enabled: !isExercicioConcluido(exercicios[index]),
+                          );
+                        },
                       ),
-                      trailing: CircularText(
-                        text: '${exercicios[index].carga} kg',
-                      ),
-                      title: Text(exercicios[index].descricao),
-                      subtitle: Text(
-                        '${exercicios[index].repeticoes} x ${exercicios[index].series} - ${exercicios[index].carga} kg',
-                      ),
-                      onTap: () => handleOpenExercicio(exercicios[index]),
-                      enabled: !isExercicioConcluido(exercicios[index]),
-                    );
-                  },
-                ),
                 floatingActionButton: FloatingActionButton(
                   onPressed: handleEncerrarTreino,
                   child: const Icon(

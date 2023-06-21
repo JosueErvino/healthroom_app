@@ -221,26 +221,30 @@ class ListaExercicios extends StatelessWidget {
           if (snapshot.hasData) {
             final exercicios = snapshot.data ?? [];
 
-            return ListView.separated(
-              shrinkWrap: true,
-              itemCount: exercicios.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: CircularText(
-                    text: '${index + 1}',
-                  ),
-                  trailing: isInstrutor() ? const Icon(Icons.edit) : null,
-                  title: Text(exercicios[index].descricao),
-                  subtitle: Text(
-                    '${exercicios[index].series} séries de ${exercicios[index].repeticoes} repetições - ${exercicios[index].carga} kg',
-                  ),
-                  onTap: () => isInstrutor()
-                      ? handleEditarExercicio(exercicios[index])
-                      : null,
-                );
-              },
-            );
+            return exercicios.isEmpty
+                ? const Center(
+                    child: Text('Nenhum exercício cadastrado!'),
+                  )
+                : ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: exercicios.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: CircularText(
+                          text: '${index + 1}',
+                        ),
+                        trailing: isInstrutor() ? const Icon(Icons.edit) : null,
+                        title: Text(exercicios[index].descricao),
+                        subtitle: Text(
+                          '${exercicios[index].series} séries de ${exercicios[index].repeticoes} repetições - ${exercicios[index].carga} kg',
+                        ),
+                        onTap: () => isInstrutor()
+                            ? handleEditarExercicio(exercicios[index])
+                            : null,
+                      );
+                    },
+                  );
           }
           return const Loading();
         });

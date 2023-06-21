@@ -133,18 +133,23 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
 
                       if (snapshot.hasData) {
                         final listaAlunos = snapshot.data ?? [];
-                        return ListView.separated(
-                          itemCount: listaAlunos.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ListTile(
-                              leading: const Icon(Icons.person),
-                              title: Text(listaAlunos[index].nome),
-                              onTap: () =>
-                                  abrirDetalhesAluno(listaAlunos[index]),
-                            );
-                          },
-                          separatorBuilder: (context, i) => const Divider(),
-                        );
+                        return listaAlunos.isEmpty
+                            ? const Center(
+                                child: Text('Nenhum aluno cadastrado!'),
+                              )
+                            : ListView.separated(
+                                itemCount: listaAlunos.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ListTile(
+                                    leading: const Icon(Icons.person),
+                                    title: Text(listaAlunos[index].nome),
+                                    onTap: () =>
+                                        abrirDetalhesAluno(listaAlunos[index]),
+                                  );
+                                },
+                                separatorBuilder: (context, i) =>
+                                    const Divider(),
+                              );
                       }
 
                       return const Loading();

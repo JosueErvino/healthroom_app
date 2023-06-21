@@ -38,19 +38,23 @@ class TreinoScreen extends StatelessWidget {
           if (snapshot.hasData) {
             final treinos = snapshot.data ?? [];
 
-            return ListView.separated(
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: treinos.length,
-              itemBuilder: (context, index) => ListTile(
-                  title: Text(treinos[index].descricao),
-                  subtitle: Text(
-                    getDataUltimaExecucao(treinos[index]),
-                  ),
-                  trailing: const Icon(Icons.play_arrow),
-                  onTap: () => handleAbrirTreino(
-                        treinos[index],
-                      )),
-            );
+            return treinos.isEmpty
+                ? const Center(
+                    child: Text('Nenhum treino cadastrado!'),
+                  )
+                : ListView.separated(
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: treinos.length,
+                    itemBuilder: (context, index) => ListTile(
+                        title: Text(treinos[index].descricao),
+                        subtitle: Text(
+                          getDataUltimaExecucao(treinos[index]),
+                        ),
+                        trailing: const Icon(Icons.play_arrow),
+                        onTap: () => handleAbrirTreino(
+                              treinos[index],
+                            )),
+                  );
           }
 
           return const Loading();
