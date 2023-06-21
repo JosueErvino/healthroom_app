@@ -317,7 +317,7 @@ class DatabaseService {
   Future<String> criarTreino(String idUsuario) {
     return _db.collection(_collectionTreinos).add({
       'usuario': idUsuario,
-      'descricao': 'Treino ${DateTime.now().toString()}}',
+      'descricao': 'Treino ${DateTime.now().toString()}',
       'ativo': true,
     }).then((value) => value.id);
   }
