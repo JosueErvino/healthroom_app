@@ -4,6 +4,7 @@ import 'package:healthroom_app/model/treino.dart';
 import 'package:healthroom_app/screen/aluno/exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 import 'package:healthroom_app/widget/circular_text.dart';
 
 class ListaExercicioScreen extends StatefulWidget {
@@ -80,6 +81,10 @@ class _ListaExercicioScreenState extends State<ListaExercicioScreen> {
         future: DatabaseService().getTreinoById(widget.treino.id),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            SnackBarService.showSnackbarError(
+              context,
+              snapshot.error.toString(),
+            );
             Navigator.pop(context);
           }
 
