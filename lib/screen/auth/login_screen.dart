@@ -64,12 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: handleLogin,
-                    child: const Text('Login'),
                     style: ButtonStyle(
                       textStyle: MaterialStateProperty.all(
-                        TextStyle(fontSize: 20),
+                        const TextStyle(fontSize: 20),
                       ),
                     ),
+                    child: const Text('Login'),
                   ),
                 ),
                 TextButton(
