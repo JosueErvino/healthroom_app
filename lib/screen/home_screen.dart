@@ -7,6 +7,7 @@ import 'package:healthroom_app/screen/instrutor/_instrutor_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,8 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
         stream: AuthService().userStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Ocorreu um erro inesperado'),
+            SnackBarService.showSnackbarError(
+              context,
+              snapshot.error.toString(),
             );
           }
 
@@ -48,8 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 future: initialization,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString()),
+                    SnackBarService.showSnackbarError(
+                      context,
+                      snapshot.error.toString(),
                     );
                   }
 

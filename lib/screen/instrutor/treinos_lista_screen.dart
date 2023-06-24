@@ -6,6 +6,7 @@ import 'package:healthroom_app/screen/instrutor/treinos_editar_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/services/datetime.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
 class TreinosListaScreen extends StatefulWidget {
   final String nome;
@@ -51,10 +52,9 @@ class _TreinosListaScreenState extends State<TreinosListaScreen> {
         stream: DatabaseService().streamTreinosUsuario(widget.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
-              ),
+            SnackBarService.showSnackbarError(
+              context,
+              snapshot.error.toString(),
             );
           }
 

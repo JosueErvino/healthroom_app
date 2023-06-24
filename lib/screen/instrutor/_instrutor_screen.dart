@@ -6,6 +6,7 @@ import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/services/dialog.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
 import 'dados_aluno_screen.dart';
 
@@ -108,8 +109,9 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
               }
 
               if (snapshot.hasError) {
-                return Center(
-                  child: Text('${snapshot.error}'),
+                SnackBarService.showSnackbarError(
+                  context,
+                  snapshot.error.toString(),
                 );
               }
 
@@ -126,8 +128,9 @@ class _InstrutorScreenState extends State<InstrutorScreen> {
                       }
 
                       if (snapshot.hasError) {
-                        return Center(
-                          child: Text('${snapshot.error}'),
+                        SnackBarService.showSnackbarError(
+                          context,
+                          snapshot.error.toString(),
                         );
                       }
 

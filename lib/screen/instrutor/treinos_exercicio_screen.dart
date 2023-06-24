@@ -3,6 +3,7 @@ import 'package:healthroom_app/model/exercicio.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/services/dialog.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
 class TreinosExercicioScreen extends StatefulWidget {
   final Exercicio? exercicio;
@@ -110,7 +111,10 @@ class _TreinosExercicioScreenState extends State<TreinosExercicioScreen> {
             }
 
             if (snapshot.hasError) {
-              // TODO: Mensagem que não foi possível visualizar itens
+              SnackBarService.showSnackbarError(
+                context,
+                snapshot.error.toString(),
+              );
               Navigator.pop(context);
             }
 

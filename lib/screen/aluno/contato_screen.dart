@@ -4,6 +4,7 @@ import 'package:healthroom_app/model/usuario.dart';
 import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 import 'package:healthroom_app/services/whatsapp.dart';
 
 class ContatoScreen extends StatelessWidget {
@@ -27,8 +28,9 @@ class ContatoScreen extends StatelessWidget {
         future: getContatos,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
+            SnackBarService.showSnackbarError(
+              context,
+              snapshot.error.toString(),
             );
           }
 

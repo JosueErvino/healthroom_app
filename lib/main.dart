@@ -31,8 +31,16 @@ class _MyAppState extends State<MyApp> {
         future: _initialization,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Não foi possível iniciar a aplicação'),
+            return MaterialApp(
+              theme: appTheme,
+              home: Scaffold(
+                body: Center(
+                  child: Text(
+                    snapshot.error.toString(),
+                  ),
+                ),
+              ),
+              debugShowCheckedModeBanner: false,
             );
           }
 

@@ -5,6 +5,7 @@ import 'package:healthroom_app/screen/aluno/lista_exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
 import 'package:healthroom_app/services/datetime.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
 class TreinoScreen extends StatelessWidget {
   const TreinoScreen({super.key});
@@ -28,10 +29,9 @@ class TreinoScreen extends StatelessWidget {
         future: DatabaseService().getTreinosUsuario(usuario.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
-              ),
+            SnackBarService.showSnackbarError(
+              context,
+              snapshot.error.toString(),
             );
           }
 
