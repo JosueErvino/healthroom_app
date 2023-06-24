@@ -6,6 +6,7 @@ import 'package:healthroom_app/provider/usuario_provider.dart';
 import 'package:healthroom_app/screen/instrutor/treinos_exercicio_screen.dart';
 import 'package:healthroom_app/screen/loading_screen.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 import 'package:healthroom_app/widget/circular_text.dart';
 
 class TreinosEditarScreen extends StatefulWidget {
@@ -215,6 +216,10 @@ class ListaExercicios extends StatelessWidget {
         stream: DatabaseService().getStreamTreinoById(idTreino),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
+            SnackBarService.showSnackbarError(
+              context,
+              snapshot.error.toString(),
+            );
             Navigator.pop(context);
           }
 
