@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/solicitacao.dart';
 import 'package:healthroom_app/services/database.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
-class SolicitacoesScreen extends StatelessWidget {
+class SolicitacoesScreen extends StatefulWidget {
   const SolicitacoesScreen({
     super.key,
     this.listaSolicitacoes,
@@ -11,8 +12,31 @@ class SolicitacoesScreen extends StatelessWidget {
   final List? listaSolicitacoes;
 
   @override
+  State<SolicitacoesScreen> createState() => _SolicitacoesScreenState();
+}
+
+class _SolicitacoesScreenState extends State<SolicitacoesScreen> {
+  late List lista;
+
+  @override
+  void initState() {
+    super.initState();
+    lista = widget.listaSolicitacoes ?? [];
+  }
+
+  void _responderSolicitacao(int index, Solicitacao s, bool resposta) {
+    DatabaseService.responderSolicitacao(s, resposta).then((_) {
+      setState(() => lista.removeAt(index));
+    }).catchError((onError) {
+      SnackBarService.showSnackbarError(
+        context,
+        onError.toString(),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final lista = listaSolicitacoes ?? [];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Solicitações'),
@@ -42,8 +66,11 @@ class SolicitacoesScreen extends StatelessWidget {
                         child: IconButton(
                           icon: const Icon(Icons.check),
                           color: Colors.white,
-                          onPressed: () => DatabaseService.responderSolicitacao(
-                              solicitacao, true),
+                          onPressed: () => _responderSolicitacao(
+                            i,
+                            solicitacao,
+                            true,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -55,8 +82,11 @@ class SolicitacoesScreen extends StatelessWidget {
                         child: IconButton(
                           icon: const Icon(Icons.close),
                           color: Colors.white,
-                          onPressed: () => DatabaseService.responderSolicitacao(
-                              solicitacao, false),
+                          onPressed: () => _responderSolicitacao(
+                            i,
+                            solicitacao,
+                            false,
+                          ),
                         ),
                       ),
                     ],
