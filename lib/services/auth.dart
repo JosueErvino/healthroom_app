@@ -22,7 +22,22 @@ class AuthService {
   }
 
   static Future cadastrarEmail(
-      String email, String senha, Usuario usuario) async {
+    String email,
+    String senha,
+    Usuario usuario,
+  ) async {
+    if (email.isEmpty || senha.isEmpty) throw ('Preencha todos os campos.');
+
+    if (usuario.dadoPessoalVazio()) throw ('Preencha todos os campos.');
+
+    if (!usuario.isDataNascimentoValido()) {
+      throw ('Data de nascimento inválida. (dd/mm/aaaa)');
+    }
+
+    if (!usuario.isTelefoneValido()) {
+      throw ('Telefone inválido. (11 999999999)');
+    }
+
     try {
       final userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: senha);
@@ -35,12 +50,16 @@ class AuthService {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        return 'A senha é muito fraca.';
+        throw 'A senha é muito fraca.';
       } else if (e.code == 'email-already-in-use') {
-        return 'O email já está em uso.';
+        throw 'O email já está em uso.';
+      } else if (e.code == 'invalid-email') {
+        throw 'O email é inválido.';
+      } else {
+        throw 'Ocorreu um erro inesperado, tente novamente mais tarde.';
       }
     } catch (e) {
-      return 'Ocorreu um erro inesperado.';
+      throw 'Ocorreu um erro inesperado.';
     }
   }
 

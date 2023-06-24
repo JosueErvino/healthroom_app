@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthroom_app/model/perfil.dart';
 import 'package:healthroom_app/model/usuario.dart';
 import 'package:healthroom_app/services/auth.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
 class CadastroScreen extends StatefulWidget {
   const CadastroScreen({super.key});
@@ -36,7 +37,13 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
       AuthService.cadastrarEmail(
               _emailController.text, _senhaController.text, usuario)
-          .then((value) => handleBack());
+          .then((value) => handleBack())
+          .catchError(
+            (onError) => SnackBarService.showSnackbarError(
+              context,
+              onError.toString(),
+            ),
+          );
     }
 
     return Scaffold(

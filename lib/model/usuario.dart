@@ -1,4 +1,5 @@
 import 'package:healthroom_app/model/perfil.dart';
+import 'package:healthroom_app/services/datetime.dart';
 
 class Usuario {
   late String uid;
@@ -31,5 +32,20 @@ class Usuario {
 
   bool isAluno() {
     return perfil == Perfil.aluno;
+  }
+
+  bool dadoPessoalVazio() {
+    return nome.isEmpty ||
+        email.isEmpty ||
+        telefone.isEmpty ||
+        dataNascimento.isEmpty;
+  }
+
+  bool isDataNascimentoValido() {
+    return DateTimeService.validarDataNascimento(dataNascimento);
+  }
+
+  bool isTelefoneValido() {
+    return telefone.length == 11 && int.tryParse(telefone) != null;
   }
 }
