@@ -166,7 +166,9 @@ class DatabaseService {
   }
 
   static Future<void> responderSolicitacao(
-      Solicitacao solicitacao, bool aceita) async {
+    Solicitacao solicitacao,
+    bool aceita,
+  ) async {
     final ref = FirebaseFirestore.instance;
 
     if (aceita) {
