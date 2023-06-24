@@ -8,6 +8,7 @@ class AuthService {
   final user = FirebaseAuth.instance.currentUser;
 
   static Future login(String email, String password) async {
+    if (email.isEmpty || password.isEmpty) throw ('Preencha todos os campos.');
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,

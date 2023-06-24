@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthroom_app/screen/auth/cadastro_screen.dart';
 import 'package:healthroom_app/services/auth.dart';
 import 'package:healthroom_app/services/dialog.dart';
+import 'package:healthroom_app/services/snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final senha = _senhaController.text;
 
       AuthService.login(email, senha).catchError((onError) {
-        DialogService().showAlertDialog(context, '', onError.toString());
+        SnackBarService.showSnackbarError(context, onError.toString());
       });
     }
 
