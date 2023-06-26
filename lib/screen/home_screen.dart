@@ -43,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             displayName = snapshot.data?.displayName ?? 'Health Room';
             uid = snapshot.data?.uid ?? '';
-            final Future<Usuario> initialization =
-                DatabaseService().getUsuario(uid);
+            final Stream<Usuario> initialization =
+                DatabaseService().getStreamUsuario(uid);
 
-            return FutureBuilder<Usuario>(
-                future: initialization,
+            return StreamBuilder<Usuario>(
+                stream: initialization,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     SnackBarService.showSnackbarError(

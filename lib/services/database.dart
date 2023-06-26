@@ -37,6 +37,15 @@ class DatabaseService {
     return usuario;
   }
 
+  Stream<Usuario> getStreamUsuario(String uid) {
+    return _db.collection('usuarios').doc(uid).snapshots().map((snapshot) {
+      var data = snapshot.data();
+      Usuario usuario = Usuario.fromMap(data ?? {});
+      usuario.uid = uid;
+      return usuario;
+    });
+  }
+
   Future<List<Treino>> getTreinosUsuario(String userID) async {
     var ref = _db.collection(_collectionTreinos);
     var snapshot = ref
