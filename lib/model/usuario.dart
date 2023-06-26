@@ -1,5 +1,6 @@
 import 'package:healthroom_app/model/perfil.dart';
 import 'package:healthroom_app/services/datetime.dart';
+import 'package:healthroom_app/services/number.dart';
 
 class Usuario {
   late String uid;
@@ -21,8 +22,8 @@ class Usuario {
     usuario.telefone = data['telefone'];
     usuario.dataNascimento = data['dataNascimento'];
     usuario.perfil = Perfil.fromValue(data['perfil']);
-    usuario.peso = data['peso'] ?? 0.0;
-    usuario.altura = data['altura'] ?? 0.0;
+    usuario.peso = NumberService.toDouble(data['peso']);
+    usuario.altura = NumberService.toDouble(data['altura']);
     return usuario;
   }
 
