@@ -1,6 +1,6 @@
 {
-    "name": "healthroom_app",
-    "short_name": "healthroom_app",
+    "name": "Health Room",
+    "short_name": "Health Room",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#4DA167",
